@@ -1,12 +1,12 @@
-[iespes]: "https://www.iespes.com.br"
-
 <div align="center">
-  <img height="50px" src="./Assets/iespes-logo.svg">
+  <a href="https://www.iespes.com.br">
+    <img height="50px" src="https://github.com/dreisss/Iespes-Extra/blob/main/Assets/iespes_logo.svg">
+  </a>
 </div>
 
 ---
 
-Extra contents I've made when I was studying at **[Iespes]**.
+Extra contents I've made when I was studying at [**Iespes**](https://www.iespes.com.br).
 
 ### [<img height="20" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"> **Design content:**](#)
 
@@ -34,7 +34,6 @@ Extra contents I've made when I was studying at **[Iespes]**.
 <table>
   <tr>
     <td> <a href="./Programs/Python/script01/"> <b> Script 01 </b> </a> </td>
-    <td> </td> <!----> <td> </td> <!----> <td> </td> <!----> <td> </td>
   </tr>
 </table>
 
