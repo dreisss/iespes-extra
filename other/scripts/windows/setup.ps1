@@ -29,10 +29,20 @@ function createDefaultUser() {
   Add-LocalGroupMember -SID "S-1-5-32-545" -Member "Aluno" | Out-Null
 }
 
+function installApps() {
+  Write-Host "Installing apps..." -ForegroundColor Blue
+  [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+  foreach ($app in @("winrar", "adobereader", "googlechrome", "firefox")) {
+    Write-Host "Installing $app" -ForegroundColor Blue
+    choco install -y $app
+  }
+}
+
 function runFunctions() {
-  setNetworkConfigs()
-  setComputerName()
-  createDefaultUser()
+  setNetworkConfigs
+  setComputerName
+  createDefaultUser
+  installApps
 }
 
 $primitives = @{
