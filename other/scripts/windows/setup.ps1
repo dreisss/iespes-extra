@@ -25,7 +25,8 @@ function setComputerName() {
 
 function createDefaultUser() {
   Write-Host "Creating default user..." -ForegroundColor Blue
-  New-LocalUser -Name "Aluno" -NoPassword -UserMayNotChangePassword -AccountNeverExpires | Out-Null
+  New-LocalUser -Name "Aluno" -NoPassword | Out-Null
+  Set-LocalUser -Name "Aluno" -UserMayChangePassword $false  -PasswordNeverExpires $true -AccountNeverExpires | Out-Null
   Add-LocalGroupMember -SID "S-1-5-32-545" -Member "Aluno" | Out-Null
 }
 
