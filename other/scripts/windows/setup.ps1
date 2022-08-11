@@ -6,10 +6,10 @@ function formatNumber( [string]$number ) {
 }
 
 function setNetworkConfigs() {
-  $addressIPV4    = "192.168.$($primitives.labinNumber).$([int]$primitives.computerNumber + 1)"
+  $addressIPV4 = "192.168.$($primitives.labinNumber).$([int]$primitives.computerNumber + 1)"
   $defaultGateway = "192.168.$($primitives.labinNumber).1"
-  $primaryDNS     = "8.8.8.8"
-  $secondaryDNS   = "8.8.4.4"
+  $primaryDNS = "8.8.8.8"
+  $secondaryDNS = "8.8.4.4"
 
   Write-Host "Changing network configs..." -ForegroundColor Blue
   New-NetIPAddress -InterfaceAlias "Ethernet" -AddressFamily "ipv4" -IPAddress $addressIPV4 -PrefixLength 24 -DefaultGateway $defaultGateway | Out-Null
