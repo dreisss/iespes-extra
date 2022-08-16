@@ -12,8 +12,8 @@ Some other scripts:
   - [**script01**] | Plot a function graph using matplotlib (made to a teacher)
 
 - [**Powershell**]
-  - [**afterInstall**] | Configure computers at iespes after install windows
-    (used in lab monitoring)
+  - [**setup**] | Configure computers at iespes after install windows (used in
+    lab monitoring)
 
 ## [**Used tools/technologies:**](#used-toolstechnologies)
 
@@ -34,7 +34,7 @@ Some other scripts:
 [**python**]: ./python
 [**powershell**]: ./powershell
 [**script01**]: ./python/script01.py
-[**afterinstall**]: ./powershell/afterInstall.ps1
+[**setup**]: ./powershell/setup.ps1
 [**_`python`_**]: https://www.python.org
 [**_`bash`_**]: https://www.gnu.org/software/bash/
 [**_`powershell`_**]: https://docs.microsoft.com/en-us/powershell/

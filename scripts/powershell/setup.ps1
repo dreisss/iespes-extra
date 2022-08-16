@@ -33,7 +33,7 @@ function createDefaultUser() {
 function installApps() {
   Write-Host "Installing apps..." -ForegroundColor Blue
   Start-Sleep -Seconds 30
-  [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+  [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
   foreach ($app in @("winrar", "adobereader", "googlechrome", "firefox")) {
     Write-Host "Installing $app" -ForegroundColor Blue
     choco install -y $app | Out-Null
