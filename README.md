@@ -1,68 +1,41 @@
-<br>
-
-<div align="center">
+<h1 align="center">
   <a href="https://www.iespes.com.br">
-    <img height="60px"
-      src="./design/logos/iespes_logo.svg"
-    />
+      <img height="60px" src="./design/logos/iespes_logo.svg" />
   </a>
-</div>
+</h1>
 
-<br>
+## [**Description**](#description)
 
-Other things I've made when I was a student at **IESPES**. Related to this, see
-the main repo from Iespes: [**Iespes**](https://github.com/dreisss/Iespes)
+This is an extra repo to organize and store extra stuff I made while I was
+studying at [**Iespes**]. To see the main repo, follow the link: [**iespes repo**].
+Here there are some side projects, tools used in monitoring computer labs, and
+some things requested by a teacher.
 
-## [<img height="25" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matlab/matlab-original.svg"> **MATLAB:**](#)
+## [**Content**](#content)
 
-Some exercises solved using matlab language.
+The content here is separated as indicated below, click on the section name to
+be redirected.
 
-<table>
-  <tr>
-    <td> <a href="./matlab/list01"> <b> List 01 </b> </a> </td>
-    <td> <a href="./matlab/list02"> <b> List 02 </b> </a> </td>
-    <td> <a href="./matlab/list03"> <b> List 03 </b> </a> </td>
-    <td> <a href="./matlab/list04"> <b> List 04 </b> </a> </td>
-    <td> <a href="./matlab/extra"> <b> Extra </b> </a> </td>
-  </tr>
-</table>
+- [**_`Design`_**] [<img height="22px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"/>]
+  | Some side projects related to design
 
-## [**OTHER:**](#)
+- [**_`Matlab`_**] [<img height="24px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matlab/matlab-original.svg"/>]
+  | Matlab scripts made at the request of a teacher
 
-Some other things I made.
+- [**_`Other Scripts:`_**]
+  [<img height="24px" align="center"  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"/>]
+  [<img height="24px" align="center"  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg"/>]
+  [<img height="24px" align="center"  src="https://docs.microsoft.com/en-us/powershell/media/index/powershell_128.svg"/>]
 
-<table>
-  <tr>
-    <td>
-      <a href="./other/scripts/windows/">
-        <img height="15" align="center"
-          src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/windows8/windows8-original.svg"
-        /> &nbsp;
-        <b> Windows Scripts </b>
-      </a>
-    </td>
-    <td>
-      <a href="./other/scripts/linux/">
-        <img height="18" align="center"
-          src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg"
-        /> &nbsp;
-        <b> Linux Scripts </b>
-      </a>
-    <td>
-      <a href="./other/python/">
-        <img height="20" align="center"
-          src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
-        /> &nbsp;
-        <b> Python Programs </b>
-      </a>
-    </td>
-    <td>
-      <a href="./design/logos/">
-        <img height="20" align="center"
-          src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"
-        /> &nbsp;
-        <b> Iespes Logos </b>
-      </a>
-    </td>
-  </tr>
-</table>
+[**Iespes**]: https://www.iespes.com.br
+[**iespes repo**]: https://github.com/dreisss/iespes
+
+[**_`Design`_**]: ./design
+[**_`Matlab`_**]: ./matlab
+[**_`Other Scripts:`_**]: ./scripts
+
+[<img height="22px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"/>]: https://www.figma.com/design/
+[<img height="24px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matlab/matlab-original.svg"/>]: https://www.mathworks.com/products/matlab.html
+[<img height="24px" align="center"  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"/>]: https://www.python.org
+[<img height="24px" align="center"  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg"/>]: https://www.gnu.org/software/bash/
+[<img height="24px" align="center"  src="https://docs.microsoft.com/en-us/powershell/media/index/powershell_128.svg"/>]: https://docs.microsoft.com/en-us/powershell/
