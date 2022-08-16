@@ -20,7 +20,6 @@ Some side projects related to design:
 
 <div>
 
-[**Iespes Logos**]: ./logos/iespes_logo.svg
-
-[**_`Figma`_**]: https://www.figma.com/design/
+[**iespes logos**]: ./logos/iespes_logo.svg
+[**_`figma`_**]: https://www.figma.com/design/
 [<img height="22px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"/>]: https://www.figma.com/design/

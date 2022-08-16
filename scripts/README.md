@@ -8,6 +8,7 @@
 Some other scripts:
 
 - [**Python**]
+
   - [**script01**] | Plot a function graph using matplotlib (made to a teacher)
 
 - [**Powershell**]
@@ -18,7 +19,7 @@ Some other scripts:
 
 - [**_`Python`_**] [<img height="24px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matlab/matlab-original.svg"/>]
 - [**_`Bash`_**] [<img height="24px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg"/>]
-- [**_`Powershell`_**] [<img height="24px" align="center"  src="https://docs.microsoft.com/en-us/powershell/media/index/powershell_128.svg"/>]
+- [**_`Powershell`_**] [<img height="24px" align="center" src="https://docs.microsoft.com/en-us/powershell/media/index/powershell_128.svg"/>]
 
 <br>
 
@@ -28,18 +29,15 @@ Some other scripts:
 
 <div>
 
-[**_`Scripts`_**]:  https://www.mathworks.com/products/matlab.html
-[<img height="24px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matlab/matlab-original.svg"/>]:  https://www.mathworks.com/products/matlab.html
-
-[**Python**]: ./python
-[**Powershell**]: ./powershell
+[**_`scripts`_**]: https://www.mathworks.com/products/matlab.html
+[<img height="24px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matlab/matlab-original.svg"/>]: https://www.mathworks.com/products/matlab.html
+[**python**]: ./python
+[**powershell**]: ./powershell
 [**script01**]: ./python/script01.py
-[**afterInstall**]: ./powershell/afterInstall.ps1
-
-[**_`Python`_**]: https://www.python.org
-[**_`Bash`_**]: https://www.gnu.org/software/bash/
-[**_`Powershell`_**]: https://docs.microsoft.com/en-us/powershell/
-
-[<img height="24px" align="center"  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"/>]: https://www.python.org
-[<img height="24px" align="center"  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg"/>]: https://www.gnu.org/software/bash/
-[<img height="24px" align="center"  src="https://docs.microsoft.com/en-us/powershell/media/index/powershell_128.svg"/>]: https://docs.microsoft.com/en-us/powershell/
+[**afterinstall**]: ./powershell/afterInstall.ps1
+[**_`python`_**]: https://www.python.org
+[**_`bash`_**]: https://www.gnu.org/software/bash/
+[**_`powershell`_**]: https://docs.microsoft.com/en-us/powershell/
+[<img height="24px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"/>]: https://www.python.org
+[<img height="24px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg"/>]: https://www.gnu.org/software/bash/
+[<img height="24px" align="center" src="https://docs.microsoft.com/en-us/powershell/media/index/powershell_128.svg"/>]: https://docs.microsoft.com/en-us/powershell/

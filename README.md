@@ -23,19 +23,17 @@ be redirected.
   | Matlab scripts made at the request of a teacher
 
 - [**_`Other Scripts:`_**]
-  [<img height="24px" align="center"  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"/>]
-  [<img height="24px" align="center"  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg"/>]
-  [<img height="24px" align="center"  src="https://docs.microsoft.com/en-us/powershell/media/index/powershell_128.svg"/>]
+  [<img height="24px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"/>]
+  [<img height="24px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg"/>]
+  [<img height="24px" align="center" src="https://docs.microsoft.com/en-us/powershell/media/index/powershell_128.svg"/>]
 
-[**Iespes**]: https://www.iespes.com.br
+[**iespes**]: https://www.iespes.com.br
 [**iespes repo**]: https://github.com/dreisss/iespes
-
-[**_`Design`_**]: ./design
-[**_`Matlab`_**]: ./matlab
-[**_`Other Scripts:`_**]: ./scripts
-
+[**_`design`_**]: ./design
+[**_`matlab`_**]: ./matlab
+[**_`other scripts:`_**]: ./scripts
 [<img height="22px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"/>]: https://www.figma.com/design/
 [<img height="24px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matlab/matlab-original.svg"/>]: https://www.mathworks.com/products/matlab.html
-[<img height="24px" align="center"  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"/>]: https://www.python.org
-[<img height="24px" align="center"  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg"/>]: https://www.gnu.org/software/bash/
-[<img height="24px" align="center"  src="https://docs.microsoft.com/en-us/powershell/media/index/powershell_128.svg"/>]: https://docs.microsoft.com/en-us/powershell/
+[<img height="24px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"/>]: https://www.python.org
+[<img height="24px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg"/>]: https://www.gnu.org/software/bash/
+[<img height="24px" align="center" src="https://docs.microsoft.com/en-us/powershell/media/index/powershell_128.svg"/>]: https://docs.microsoft.com/en-us/powershell/

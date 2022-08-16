@@ -28,5 +28,5 @@ See the lists below:
 
 <div>
 
-[**_`Matlab`_**]:  https://www.mathworks.com/products/matlab.html
-[<img height="24px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matlab/matlab-original.svg"/>]:  https://www.mathworks.com/products/matlab.html
+[**_`matlab`_**]: https://www.mathworks.com/products/matlab.html
+[<img height="24px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matlab/matlab-original.svg"/>]: https://www.mathworks.com/products/matlab.html
