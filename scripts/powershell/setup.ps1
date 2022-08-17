@@ -1,54 +1,99 @@
-# ---> Utilities
+# ==============================================================> Write and Read
+function printInfo( [string] $text ) {
+  Write-Host ">> $text..." -ForegroundColor Blue
+}
+
+function printInfoWaiting( [string] $text ) {
+  Write-Host "> $text..." -ForegroundColor Yellow
+}
+
+function printInfoSuccess( [string] $text ) {
+  Write-Host ">> $text!!" -ForegroundColor Green
+}
+
+function waitKey( [string] $text ) {
+  printInfoWaiting($text)
+  [Console]::ReadKey($true) | Out-Null
+}
+
+function readInfo( [string] $text ) {
+  return $(Read-Host "   $text")
+}
+
+function readConditional( [string] $text ) {
+  $value = Read-Host "   $text ? (y, N)"
+  return $value -eq "y"
+}
+
+# =================================================================> Format Data
+function formatNumber( [string] $number ) {
+  return $(if ($number.Length -lt 2) { "0$number" } else { $number })
+}
+
+# ===============================================================> Request Admin
 function isAdminShell {
   $currentProcess = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
   return $currentProcess.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 }
 
-function formatNumber( [string] $number ) {
-  return $(if ($number.Length -lt 2) { "0$number" } else { $number })
+# ====================================================> Config Computer: Network
+function configureNetworkNotebook {
+  printInfoWaiting("Waiting for Wifi connection")
+  waitKey("Press any key when connected to wifi")
 }
 
-function printInfoBlue( [string] $text ) {
-  Write-Host ">> $text..." -ForegroundColor Blue
-}
-
-# ---> Configuring
-function setNetworkConfigs {
+function configureNetworkDesktop {
   $addressIPV4 = "192.168.$([int]$labinNumber).$([int]$computerNumber + 1)"
   $defaultGateway = "192.168.$([int]$labinNumber).1"
   $primaryDNS = "8.8.8.8"
   $secondaryDNS = "8.8.4.4"
 
-  printInfoBlue("Changing network configs")
   New-NetIPAddress -InterfaceAlias "Ethernet" -AddressFamily "ipv4" -IPAddress $addressIPV4 -PrefixLength 24 -DefaultGateway $defaultGateway | Out-Null
   Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses ($primaryDNS, $secondaryDNS) | Out-Null
 }
 
-function setComputerName {
+function configureNetwork {
+  printInfo("Changing network configs")
+  if ($isNotebook) {
+    configureNetworkNotebook
+    return
+  }
+  configureNetworkDesktop
+}
+
+# ======================================================> Config Computer: Other
+function configureComputerName {
   $formattedLabinNumber = formatNumber([int]$labinNumber)
   $formattedComputerNumber = formatNumber([int]$computerNumber)
   $computerName = "LABIN$formattedLabinNumber-PC$formattedComputerNumber"
 
-  printInfoBlue("Renaming computer")
+  printInfo("Renaming computer")
   Rename-Computer -NewName $computerName | Out-Null
 }
 
-function createDefaultUser {
-  printInfoBlue("Creating default user")
+function createUserAluno {
+  printInfo("Creating default user")
   New-LocalUser -Name "Aluno" -NoPassword | Out-Null
   Set-LocalUser -Name "Aluno" -UserMayChangePassword $false  -PasswordNeverExpires $true -AccountNeverExpires | Out-Null
   Add-LocalGroupMember -SID "S-1-5-32-545" -Member "Aluno" | Out-Null
 }
 
+function configureComputer {
+  configureComputerName
+  createUserAluno
+}
+
+# ===========================================> Config Computer: Activate Windows
 function activateWindows {
-  printInfoBlue("Activating Windows")
+  printInfo("Activating Windows")
   cmd.exe /c slmgr /ipk W269N-WFGWX-YVC9B-4J6C9-T83GX
   cmd.exe /c slmgr /skms kms8.msguides.com
   cmd.exe /c slmgr /ato
 }
 
+# ===============================================> Config Computer: Install Apps
 function installApps {
-  printInfoBlue("Installing apps")
+  printInfo("Installing apps")
   Start-Sleep -Seconds 30
   [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
   foreach ($app in @("winrar", "adobereader", "googlechrome", "firefox")) {
@@ -57,28 +102,25 @@ function installApps {
   }
 }
 
+# =====================================================================> Running
 function runFunctions {
-  setNetworkConfigs
-  setComputerName
-  createDefaultUser
+  configureNetwork
+  configureComputer
   activateWindows
   installApps
 }
 
-# ---> Running
 if (-not(isAdminShell)) {
-  Start-Process powershell -Verb RunAs -ArgumentList ('-noprofile -file "{0}" -elevated' -f ($myinvocation.MyCommand.Definition))
+  Start-Process powershell -Verb RunAs -ArgumentList ('-noprofile -noexit -file "{0}" -elevated' -f ($myinvocation.MyCommand.Definition))
   exit
 }
 
-printInfoBlue("Running setup script")
+printInfo("Running setup script")
 
-$labinNumber = Read-Host "Labin number"
-$computerNumber = Read-Host "Computer number"
+$labinNumber = readInfo("Labin number")
+$computerNumber = readInfo("Computer number")
+$isNotebook = readConditional("Is Notebook")
 
-printInfoBlue("Press any key to start running")
-[Console]::ReadKey($true) | Out-Null
-
+waitKey("Press any key to start")
 runFunctions
-
-printInfoBlue("Finished running setup script")
+printInfoSuccess("Finished running setup script")
