@@ -14,8 +14,8 @@ function printInfoBlue( [string] $text ) {
 
 # ---> Configuring
 function setNetworkConfigs {
-  $addressIPV4 = "192.168.$([int]$primitives.labinNumber).$([int]$primitives.computerNumber + 1)"
-  $defaultGateway = "192.168.$([int]$primitives.labinNumber).1"
+  $addressIPV4 = "192.168.$([int]$labinNumber).$([int]$computerNumber + 1)"
+  $defaultGateway = "192.168.$([int]$labinNumber).1"
   $primaryDNS = "8.8.8.8"
   $secondaryDNS = "8.8.4.4"
 
@@ -25,8 +25,8 @@ function setNetworkConfigs {
 }
 
 function setComputerName {
-  $formattedLabinNumber = formatNumber([int]$primitives.labinNumber)
-  $formattedComputerNumber = formatNumber([int]$primitives.computerNumber)
+  $formattedLabinNumber = formatNumber([int]$labinNumber)
+  $formattedComputerNumber = formatNumber([int]$computerNumber)
   $computerName = "LABIN$formattedLabinNumber-PC$formattedComputerNumber"
 
   printInfoBlue("Renaming computer")
@@ -65,10 +65,8 @@ if (-not(isAdminShell)) {
 
 printInfoBlue("Running setup script")
 
-$primitives = @{
-  labinNumber    = Read-Host "Labin number"
-  computerNumber = Read-Host "Computer number"
-}
+$labinNumber = Read-Host "Labin number"
+$computerNumber = Read-Host "Computer number"
 
 printInfoBlue("Press any key to start running")
 [Console]::ReadKey($true) | Out-Null
