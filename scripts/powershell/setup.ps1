@@ -39,7 +39,7 @@ function isAdminShell {
 # ====================================================> Config Computer: Network
 function configureNetworkNotebook {
   printInfoWaiting("Waiting for Wifi connection")
-  waitKey("Press any key when connected to wifi")
+  waitKey("Press when network is available")
 }
 
 function configureNetworkDesktop {
@@ -50,10 +50,11 @@ function configureNetworkDesktop {
 
   New-NetIPAddress -InterfaceAlias "Ethernet" -AddressFamily "ipv4" -IPAddress $addressIPV4 -PrefixLength 24 -DefaultGateway $defaultGateway | Out-Null
   Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses ($primaryDNS, $secondaryDNS) | Out-Null
+  Start-Sleep -Seconds 30
 }
 
 function configureNetwork {
-  printInfo("Changing network configs")
+  printInfo("Configuring network")
   if ($isNotebook) {
     configureNetworkNotebook
     return
@@ -92,22 +93,31 @@ function activateWindows {
 }
 
 # ===============================================> Config Computer: Install Apps
-function installApps {
-  printInfo("Installing apps")
-  Start-Sleep -Seconds 30
+function installChocoApps {
   [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
   foreach ($app in @("winrar", "adobereader", "googlechrome", "firefox", "avastfreeantivirus")) {
-    Write-Host "Installing $app..." -ForegroundColor Blue
+    printInfo("Installing $app")
     choco install -y $app | Out-Null
   }
 }
 
+function getOfficeInstaller {
+  printInfo("Getting office installer")
+  Invoke-WebRequest -Uri "https://github.com/dreisss/iespes-extra/blob/d2caecddfcf7fd37924af3453c875ee3add08118/other/office.rar" -OutFile "$env:USERPROFILE\Desktop\office.rar"
+}
+
+function getApps {
+  printInfo("Getting apps")
+  getOfficeInstaller
+  installChocoApps
+}
+
 # =====================================================================> Running
 function runFunctions {
-  configureNetwork
   configureComputer
+  configureNetwork
   activateWindows
-  installApps
+  getApps
 }
 
 if (-not(isAdminShell)) {
@@ -121,6 +131,6 @@ $labinNumber = readInfo("Labin number")
 $computerNumber = readInfo("Computer number")
 $isNotebook = readConditional("Is Notebook")
 
-waitKey("Press any key to start")
+waitKey("Press to start")
 runFunctions
-printInfoSuccess("Finished running setup script")
+printInfoSuccess("Finished script")
