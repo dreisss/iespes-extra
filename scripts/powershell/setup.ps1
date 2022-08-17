@@ -1,58 +1,67 @@
 #Requires -RunAsAdministrator
 
-function formatNumber( [string]$number ) {
-  if ($number.Length -lt 2) { return "0$number" }
-  return $number
+function formatNumber( [string] $number ) {
+  return $(if ($number.Length -lt 2) { "0$number" } else { $number })
 }
 
-function setNetworkConfigs() {
-  $addressIPV4 = "192.168.$($primitives.labinNumber).$([int]$primitives.computerNumber + 1)"
-  $defaultGateway = "192.168.$($primitives.labinNumber).1"
+function printInfoBlue( [string] $text ) {
+  Write-Host ">> $text..." -ForegroundColor Blue
+}
+
+function setNetworkConfigs {
+  $addressIPV4 = "192.168.$([int]$primitives.labinNumber).$([int]$primitives.computerNumber + 1)"
+  $defaultGateway = "192.168.$([int]$primitives.labinNumber).1"
   $primaryDNS = "8.8.8.8"
   $secondaryDNS = "8.8.4.4"
 
-  Write-Host "Changing network configs..." -ForegroundColor Blue
+  printInfoBlue("Changing network configs")
   New-NetIPAddress -InterfaceAlias "Ethernet" -AddressFamily "ipv4" -IPAddress $addressIPV4 -PrefixLength 24 -DefaultGateway $defaultGateway | Out-Null
   Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses ($primaryDNS, $secondaryDNS) | Out-Null
 }
 
-function setComputerName() {
-  $computerName = "LABIN$(formatNumber($primitives.labinNumber))-PC$(formatNumber($primitives.computerNumber))"
+function setComputerName {
+  $formattedLabinNumber = formatNumber([int]$primitives.labinNumber)
+  $formattedComputerNumber = formatNumber([int]$primitives.computerNumber)
+  $computerName = "LABIN$formattedLabinNumber-PC$formattedComputerNumber"
 
-  Write-Host "Renaming computer..." -ForegroundColor Blue
+  printInfoBlue("Renaming computer")
   Rename-Computer -NewName $computerName | Out-Null
 }
 
-function createDefaultUser() {
-  Write-Host "Creating default user..." -ForegroundColor Blue
+function createDefaultUser {
+  printInfoBlue("Creating default user")
   New-LocalUser -Name "Aluno" -NoPassword | Out-Null
   Set-LocalUser -Name "Aluno" -UserMayChangePassword $false  -PasswordNeverExpires $true -AccountNeverExpires | Out-Null
   Add-LocalGroupMember -SID "S-1-5-32-545" -Member "Aluno" | Out-Null
 }
 
-function installApps() {
-  Write-Host "Installing apps..." -ForegroundColor Blue
+function installApps {
+  printInfoBlue("Installing apps")
   Start-Sleep -Seconds 30
   [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
   foreach ($app in @("winrar", "adobereader", "googlechrome", "firefox")) {
-    Write-Host "Installing $app" -ForegroundColor Blue
+    Write-Host "Installing $app..." -ForegroundColor Blue
     choco install -y $app | Out-Null
   }
 }
 
-function runFunctions() {
+function runFunctions {
   setNetworkConfigs
   setComputerName
   createDefaultUser
   installApps
 }
 
+printInfoBlue("Running setup script")
+
 $primitives = @{
   labinNumber    = Read-Host "Labin number"
   computerNumber = Read-Host "Computer number"
 }
 
-Write-Host "Press any key to continue." -ForegroundColor Blue
+printInfoBlue("Press any key to start running")
 [Console]::ReadKey($true) | Out-Null
 
 runFunctions
+
+printInfoBlue("Finished running setup script")
