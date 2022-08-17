@@ -40,6 +40,13 @@ function createDefaultUser {
   Add-LocalGroupMember -SID "S-1-5-32-545" -Member "Aluno" | Out-Null
 }
 
+function activateWindows {
+  printInfoBlue("Activating Windows")
+  cmd.exe /c slmgr /ipk W269N-WFGWX-YVC9B-4J6C9-T83GX
+  cmd.exe /c slmgr /skms kms8.msguides.com
+  cmd.exe /c slmgr /ato
+}
+
 function installApps {
   printInfoBlue("Installing apps")
   Start-Sleep -Seconds 30
@@ -54,6 +61,7 @@ function runFunctions {
   setNetworkConfigs
   setComputerName
   createDefaultUser
+  activateWindows
   installApps
 }
 
