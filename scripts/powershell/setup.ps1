@@ -1,4 +1,8 @@
-#Requires -RunAsAdministrator
+# ---> Utilities
+function isAdminShell {
+  $currentProcess = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+  return $currentProcess.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+}
 
 function formatNumber( [string] $number ) {
   return $(if ($number.Length -lt 2) { "0$number" } else { $number })
@@ -8,6 +12,7 @@ function printInfoBlue( [string] $text ) {
   Write-Host ">> $text..." -ForegroundColor Blue
 }
 
+# ---> Configuring
 function setNetworkConfigs {
   $addressIPV4 = "192.168.$([int]$primitives.labinNumber).$([int]$primitives.computerNumber + 1)"
   $defaultGateway = "192.168.$([int]$primitives.labinNumber).1"
@@ -50,6 +55,12 @@ function runFunctions {
   setComputerName
   createDefaultUser
   installApps
+}
+
+# ---> Running
+if (-not(isAdminShell)) {
+  Start-Process powershell -Verb RunAs -ArgumentList ('-noprofile -file "{0}" -elevated' -f ($myinvocation.MyCommand.Definition))
+  exit
 }
 
 printInfoBlue("Running setup script")
