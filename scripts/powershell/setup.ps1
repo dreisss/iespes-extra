@@ -101,15 +101,8 @@ function installChocoApps {
   }
 }
 
-function getOfficeInstaller {
-  printInfo("Getting office installer")
-  # TODO: solve downloading office installer problem
-  Invoke-WebRequest -Uri "https://github.com/dreisss/iespes-extra/blob/d2caecddfcf7fd37924af3453c875ee3add08118/other/office.rar" -OutFile "$env:USERPROFILE\Desktop\office.rar"
-}
-
 function getApps {
   printInfo("Getting apps")
-  getOfficeInstaller
   installChocoApps
 }
 
@@ -122,7 +115,7 @@ function runFunctions {
 }
 
 if (-not(isAdminShell)) {
-  Start-Process powershell -Verb RunAs -ArgumentList ('Set-ExecutionPolicy Bypass -Scope Process -Force; -noprofile -file "{0}" -elevated' -f ($myinvocation.MyCommand.Definition))
+  Start-Process powershell -Verb RunAs -ArgumentList ('-Noprofile -ExecutionPolicy Bypass -File "{0}" -Elevated' -f ($myinvocation.MyCommand.Definition))
   exit
 }
 
