@@ -107,16 +107,19 @@ function getApps {
 }
 
 # ===================================> Config Computer: Styling and Optimization
-
-function optimizeComputer {
-  printInfo("Optimizing computer")
-}
-
 function getUsersSID {
   $usersList Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\*" | Where-Object {$_.PSChildName -match "S-1-5-21-\d+-\d+\-\d+\-\d+$"}
   return $usersList.PSChildName
 }
 
+function optimizeComputer {
+  printInfo("Optimizing computer")
+  foreach ($userSID in getUsersSID) {
+    Set-ItemProperty Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects -Name VisualFXSetting -Value 2
+    Set-ItemProperty Registry::HKEY_USERS\$userSID\Control Panel\Desktop -Name FontSmoothing -Value 2
+    Set-ItemProperty Registry::HKEY_USERS\$userSID\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications -Name GlobalUserDisabled -Value 1
+  }
+}
 
 function styleComputer {
   printInfo("Styling computer")
