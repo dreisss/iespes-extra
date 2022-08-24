@@ -106,12 +106,24 @@ function getApps {
   installChocoApps
 }
 
+# ===================================> Config Computer: Styling and Optimization
+
+function optimizeComputer {
+  printInfo("Optimizing computer")
+}
+
+function styleComputer {
+  printInfo("Styling computer")
+}
+
 # =====================================================================> Running
 function runFunctions {
   configureComputer
   configureNetwork
   activateWindows
   getApps
+  styleComputer
+  optimizeComputer
 }
 
 if (-not(isAdminShell)) {
