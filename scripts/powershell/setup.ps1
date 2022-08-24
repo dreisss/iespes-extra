@@ -87,7 +87,7 @@ function configureComputer {
 # ===========================================> Config Computer: Activate Windows
 function activateWindows {
   printInfo("Activating Windows")
-  cmd.exe /c slmgr /ipk W269N-WFGWX-YVC9B-4J6C9-T83GX
+  cmd.exe /c slmgr /ipk NPPR9-FWDCX-D2C8J-H872K-2YT43 # W269N-WFGWX-YVC9B-4J6C9-T83GX
   cmd.exe /c slmgr /skms kms8.msguides.com
   cmd.exe /c slmgr /ato
 }
