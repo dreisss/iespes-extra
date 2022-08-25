@@ -130,6 +130,27 @@ function installApps {
   installAppsFromChoco
 }
 
+# ==========================================================> Apps: Uninstalling
+
+function uninstallCortana {
+  printInfoWaiting("Cortana")
+  Get-AppxPackage -AllUsers Microsoft.549981C3F5F10 | Remove-AppPackage
+}
+
+function uninstallOneDrive {
+  printInfoWaiting("OneDrive")
+  foreach ($userSID in getUsersSID) {
+    $uninstallerPath = Get-ItemPropertyValue "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OneDriveSetup.exe" -Name UninstallString
+    cmd.exe /c $uninstallerPath
+  }
+}
+
+function uninstallApps {
+  printInfo("Uninstalling apps")
+  uninstallCortana
+  uninstallOneDrive
+}
+
 # =====================================================================> Running
 function runFunctions {
   configureComputer
@@ -138,6 +159,7 @@ function runFunctions {
   optimizeComputer
   styleComputer
   installApps
+  uninstallApps
 }
 
 if (-not(isAdminShell)) {
