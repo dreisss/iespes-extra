@@ -1,14 +1,14 @@
 # ==============================================================> Write and Read
 function printInfo( [string] $text ) {
-  Write-Host ">> $text..." -ForegroundColor Blue
+  Write-Host ">> $text..." -ForegroundColor "Blue"
 }
 
 function printInfoWaiting( [string] $text ) {
-  Write-Host "> $text..." -ForegroundColor Yellow
+  Write-Host "> $text..." -ForegroundColor "Yellow"
 }
 
 function printInfoSuccess( [string] $text ) {
-  Write-Host ">> $text!!" -ForegroundColor Green
+  Write-Host ">> $text!!" -ForegroundColor "Green"
 }
 
 function waitKey( [string] $text ) {
@@ -34,6 +34,28 @@ function formatNumber( [string] $number ) {
 function isAdminShell {
   $currentProcess = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
   return $currentProcess.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+}
+
+# ====================================================> Config Computer: General
+function configureComputerName {
+  $formattedLabinNumber = formatNumber([int]$labinNumber)
+  $formattedComputerNumber = formatNumber([int]$computerNumber)
+  $computerName = "LABIN$formattedLabinNumber-PC$formattedComputerNumber"
+
+  printInfo("Renaming computer")
+  Rename-Computer -NewName $computerName | Out-Null
+}
+
+function createUserAluno {
+  printInfo("Creating default user")
+  New-LocalUser -Name "Aluno" -NoPassword | Out-Null
+  Set-LocalUser -Name "Aluno" -UserMayChangePassword $false  -PasswordNeverExpires $true -AccountNeverExpires | Out-Null
+  Add-LocalGroupMember -SID "S-1-5-32-545" -Member "Aluno" | Out-Null
+}
+
+function configureComputer {
+  configureComputerName
+  createUserAluno
 }
 
 # ====================================================> Config Computer: Network
@@ -62,28 +84,6 @@ function configureNetwork {
   configureNetworkDesktop
 }
 
-# ======================================================> Config Computer: Other
-function configureComputerName {
-  $formattedLabinNumber = formatNumber([int]$labinNumber)
-  $formattedComputerNumber = formatNumber([int]$computerNumber)
-  $computerName = "LABIN$formattedLabinNumber-PC$formattedComputerNumber"
-
-  printInfo("Renaming computer")
-  Rename-Computer -NewName $computerName | Out-Null
-}
-
-function createUserAluno {
-  printInfo("Creating default user")
-  New-LocalUser -Name "Aluno" -NoPassword | Out-Null
-  Set-LocalUser -Name "Aluno" -UserMayChangePassword $false  -PasswordNeverExpires $true -AccountNeverExpires | Out-Null
-  Add-LocalGroupMember -SID "S-1-5-32-545" -Member "Aluno" | Out-Null
-}
-
-function configureComputer {
-  configureComputerName
-  createUserAluno
-}
-
 # ===========================================> Config Computer: Activate Windows
 function activateWindows {
   printInfo("Activating Windows")
@@ -92,42 +92,42 @@ function activateWindows {
   cmd.exe /c slmgr /ato
 }
 
-# ===============================================> Config Computer: Install Apps
-function installChocoApps {
-  [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-  foreach ($app in @("winrar", "adobereader", "googlechrome", "firefox", "avastfreeantivirus")) {
-    printInfo("Installing $app")
-    choco install -y $app | Out-Null
-  }
-}
-
-function getApps {
-  printInfo("Getting apps")
-  installChocoApps
-}
-
 # ===================================> Config Computer: Styling and Optimization
 function getUsersSID {
-  $usersList Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\*" | Where-Object {$_.PSChildName -match "S-1-5-21-\d+-\d+\-\d+\-\d+$"}
+  $usersList = Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\*" | Where-Object {$_.PSChildName -match "S-1-5-21-\d+-\d+\-\d+\-\d+$"}
   return $usersList.PSChildName
 }
 
 function optimizeComputer {
   printInfo("Optimizing computer")
   foreach ($userSID in getUsersSID) {
-    Set-ItemProperty Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects -Name VisualFXSetting -Value 2
-    Set-ItemProperty Registry::HKEY_USERS\$userSID\Control Panel\Desktop -Name FontSmoothing -Value 2
-    Set-ItemProperty Registry::HKEY_USERS\$userSID\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications -Name GlobalUserDisabled -Value 1
+    Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" -Name "VisualFXSetting" -Value 2
+    Set-ItemProperty "Registry::HKEY_USERS\$userSID\Control Panel\Desktop" -Name "FontSmoothing" -Value 2
+    Set-ItemProperty "Registry::HKEY_USERS\$userSID\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" -Name "GlobalUserDisabled" -Value 1
   }
 }
 
 function styleComputer {
   printInfo("Styling computer")
   foreach ($userSID in getUsersSID) {
-    Set-ItemProperty Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -Value 0
-    Set-ItemProperty Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -Value 0
-    Set-ItemProperty Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name EnableTransparency -Value 0
+    Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "SystemUsesLightTheme" -Value 0
+    Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "AppsUseLightTheme" -Value 0
+    Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "EnableTransparency" -Value 0
   }
+}
+
+# ============================================================> Apps: Installing
+function installAppsFromChoco {
+  [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+  foreach ($app in @("winrar", "adobereader", "googlechrome", "firefox", "avastfreeantivirus")) {
+    printInfoWaiting("$app")
+    choco install -y $app | Out-Null
+  }
+}
+
+function installApps {
+  printInfo("Installing apps")
+  installAppsFromChoco
 }
 
 # =====================================================================> Running
@@ -135,9 +135,9 @@ function runFunctions {
   configureComputer
   configureNetwork
   activateWindows
-  getApps
-  styleComputer
   optimizeComputer
+  styleComputer
+  installApps
 }
 
 if (-not(isAdminShell)) {
