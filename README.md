@@ -1,13 +1,13 @@
 <h1 align="center">
   <a href="https://www.iespes.com.br">
-      <img height="60px" src="./design/logos/iespes_logo.svg" />
+    <img height="60px" src="./design/logos/iespes_logo.svg"/>
   </a>
 </h1>
 
 ## [**Description**](#description)
 
 This is an extra repo to organize and store extra stuff I made while I was
-studying at [**Iespes**]. To see the main repo, follow the link: [**iespes repo**].
+studying at [**_Iespes_**]. To see the main repo, follow the link: [**_iespes repo_**].
 Here there are some side projects, tools used in monitoring computer labs, and
 some things requested by a teacher.
 
@@ -27,8 +27,8 @@ be redirected.
   [<img height="24px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg"/>]
   [<img height="24px" align="center" src="https://docs.microsoft.com/en-us/powershell/media/index/powershell_128.svg"/>]
 
-[**iespes**]: https://www.iespes.com.br
-[**iespes repo**]: https://github.com/dreisss/iespes
+[**_iespes_**]: https://www.iespes.com.br
+[**_iespes repo_**]: https://github.com/dreisss/iespes
 [**_`design`_**]: ./design
 [**_`matlab`_**]: ./matlab
 [**_`other scripts:`_**]: ./scripts
