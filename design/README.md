@@ -8,6 +8,12 @@ Some side projects related to design:
   &nbsp; | &nbsp;
   <img height="30px" align="center" src="./logos/iespes_logo_e.svg">
 
+- [**Wallpapers**] | Some wallpapers created to be used in the laboratories.
+
+  <img height="100px" align="center" src="./wallpapers/lock.png">
+  &nbsp; | &nbsp;
+  <img height="100px" align="center" src="./wallpapers/desktop.png">
+
 ## [**Used tools/technologies:**](#used-toolstechnologies)
 
 - [**_`Figma`_**] [<img height="22px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"/>]
@@ -20,6 +26,7 @@ Some side projects related to design:
 
 <div>
 
-[**iespes logos**]: ./logos/iespes_logo.svg
+[**iespes logos**]: ./logos
+[**Wallpapers**]: ./wallpapers
 [**_`figma`_**]: https://www.figma.com/design/
 [<img height="22px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"/>]: https://www.figma.com/design/
