@@ -1,22 +1,22 @@
-# ==============================================================> Write and Read
-function printInfo( [string] $text ) {
-  Write-Host ">> $text..." -ForegroundColor "Blue"
+# ===================================================> Utilities: write and read
+function printImportant( [string] $text ) {
+  Write-Host " > $text " -BackgroundColor "Blue" -ForegroundColor "Black"
 }
 
-function printInfoWaiting( [string] $text ) {
-  Write-Host "> $text..." -ForegroundColor "Yellow"
+function printSecondary( [string] $text ) {
+  Write-Host "   $text " -ForegroundColor "Gray"
 }
 
-function printInfoSuccess( [string] $text ) {
-  Write-Host ">> $text!!" -ForegroundColor "Green"
+function printSpace() {
+  Write-Host ""
 }
 
 function waitKey( [string] $text ) {
-  printInfoWaiting($text)
+  printSecondary("$text...")
   [Console]::ReadKey($true) | Out-Null
 }
 
-function readInfo( [string] $text ) {
+function read( [string] $text ) {
   return $(Read-Host "   $text")
 }
 
@@ -25,42 +25,46 @@ function readConditional( [string] $text ) {
   return $value -eq "y"
 }
 
-# =================================================================> Format Data
+# ============================================================> Utilities: other
 function formatNumber( [string] $number ) {
   return $(if ($number.Length -lt 2) { "0$number" } else { $number })
 }
 
-# ===============================================================> Request Admin
-function isAdminShell {
+function isRunningAsAdmin {
   $currentProcess = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
   return $currentProcess.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 }
 
 # ====================================================> Config Computer: General
-function configureComputerName {
+function renameComputer {
   $formattedLabinNumber = formatNumber([int]$labinNumber)
   $formattedComputerNumber = formatNumber([int]$computerNumber)
   $computerName = "LABIN$formattedLabinNumber-PC$formattedComputerNumber"
 
-  printInfo("Renaming computer")
+  printImportant("Renaming computer")
+  printSecondary("New name: $computerName")
   Rename-Computer -NewName $computerName | Out-Null
+  printSpace
 }
 
-function createUserAluno {
-  printInfo("Creating default user")
+function createDefaultUser {
+  printImportant("Creating default user")
+  printSecondary("Default user name: Aluno")
+  printSecondary("Default user  password: ")
   New-LocalUser -Name "Aluno" -NoPassword | Out-Null
   Set-LocalUser -Name "Aluno" -UserMayChangePassword $false  -PasswordNeverExpires $true -AccountNeverExpires | Out-Null
   Add-LocalGroupMember -SID "S-1-5-32-545" -Member "Aluno" | Out-Null
+  printSpace
 }
 
 function configureComputer {
-  configureComputerName
-  createUserAluno
+  renameComputer
+  createDefaultUser
 }
 
 # ====================================================> Config Computer: Network
 function configureNetworkNotebook {
-  printInfoWaiting("Waiting for Wifi connection")
+  printSecondary("Waiting for Wifi connection")
   waitKey("Press when network is available")
 }
 
@@ -70,13 +74,18 @@ function configureNetworkDesktop {
   $primaryDNS = "8.8.8.8"
   $secondaryDNS = "8.8.4.4"
 
+  printSecondary("IPV4 address: $addressIPV4")
+  printSecondary("Default gateway: $defaultGateway")
+  printSecondary("Primary and Secondary DNS: $primaryDNS, $secondaryDNS")
   New-NetIPAddress -InterfaceAlias "Ethernet" -AddressFamily "ipv4" -IPAddress $addressIPV4 -PrefixLength 24 -DefaultGateway $defaultGateway | Out-Null
   Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses ($primaryDNS, $secondaryDNS) | Out-Null
   Start-Sleep -Seconds 30
+  printSecondary("Waiting 30 seconds...")
+  printSpace
 }
 
 function configureNetwork {
-  printInfo("Configuring network")
+  printImportant("Configuring network")
   if ($isNotebook) {
     configureNetworkNotebook
     return
@@ -86,7 +95,7 @@ function configureNetwork {
 
 # ===========================================> Config Computer: Activate Windows
 function activateWindows {
-  printInfo("Activating Windows")
+  printImportant("Activating Windows")
   cmd.exe /c slmgr /ipk W269N-WFGWX-YVC9B-4J6C9-T83GX
   cmd.exe /c slmgr /skms kms8.msguides.com
   cmd.exe /c slmgr /ato
@@ -99,35 +108,43 @@ function getUsersSID {
 }
 
 function optimizeComputer {
-  printInfo("Optimizing computer")
+  printImportant("Optimizing computer")
+  printSecondary("Defined performance as priority on configs")
+  printSecondary("Disabled background application")
+  printSecondary("Disabled visual transparency")
   foreach ($userSID in getUsersSID) {
     Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" -Name "VisualFXSetting" -Value 2
-    Set-ItemProperty "Registry::HKEY_USERS\$userSID\Control Panel\Desktop" -Name "FontSmoothing" -Value 2
     Set-ItemProperty "Registry::HKEY_USERS\$userSID\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" -Name "GlobalUserDisabled" -Value 1
+    Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "EnableTransparency" -Value 0
   }
+  printSpace
 }
 
 function styleComputer {
-  printInfo("Styling computer")
+  printImportant("Styling computer")
+  printSecondary("Defined system and applications theme to black")
+  printSecondary("Applied font smoothing")
   foreach ($userSID in getUsersSID) {
     Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "SystemUsesLightTheme" -Value 0
     Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "AppsUseLightTheme" -Value 0
-    Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "EnableTransparency" -Value 0
+    Set-ItemProperty "Registry::HKEY_USERS\$userSID\Control Panel\Desktop" -Name "FontSmoothing" -Value 2
   }
+  printSpace
 }
 
 # ============================================================> Apps: Installing
 function installAppsFromChoco {
   [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-  foreach ($app in @("winrar", "adobereader", "googlechrome", "firefox", "avastfreeantivirus")) {
-    printInfoWaiting("$app")
+  foreach ($app in @("winrar", "adobereader", "avastfreeantivirus")) {
+    printSecondary("$app")
     choco install -y $app | Out-Null
   }
 }
 
 function installApps {
-  printInfo("Installing apps")
+  printImportant("Installing apps")
   installAppsFromChoco
+  printSpace
 }
 
 # ==========================================================> Apps: Uninstalling
@@ -252,15 +269,15 @@ function uninstallWindowsDefaultApps {
     "Microsoft.Advertising.Xaml"
   )
 
-  printInfoWaiting("Windows default apps")
   foreach ($app in $apps) {
+    printSecondary("$app...")
     Get-AppxPackage -Name $app -AllUsers | Remove-AppxPackage -AllUsers
     (Get-AppxProvisionedPackage -Online).Where( {$_.DisplayName -EQ $app}) | Remove-AppxProvisionedPackage -Online
   }
 }
 
 function uninstallOneDrive {
-  printInfoWaiting("OneDrive")
+  printSecondary("Microsoft.OneDrive")
   foreach ($userSID in getUsersSID) {
     $uninstallerPath = Get-ItemPropertyValue "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OneDriveSetup.exe" -Name UninstallString
     cmd.exe /c $uninstallerPath
@@ -268,9 +285,10 @@ function uninstallOneDrive {
 }
 
 function uninstallApps {
-  printInfo("Uninstalling apps")
+  printImportant("Uninstalling apps")
   uninstallOneDrive
   uninstallWindowsDefaultApps
+  printSpace
 }
 
 # =====================================================================> Running
@@ -284,17 +302,17 @@ function runFunctions {
   uninstallApps
 }
 
-if (-not(isAdminShell)) {
+if (-not(isRunningAsAdmin)) {
   Start-Process powershell -Verb RunAs -ArgumentList ('-Noprofile -ExecutionPolicy Bypass -File "{0}" -Elevated' -f ($myinvocation.MyCommand.Definition))
   exit
 }
 
-printInfo("Running setup script")
+printImportant("Starting script")
 
-$labinNumber = readInfo("Labin number")
-$computerNumber = readInfo("Computer number")
+$labinNumber = read("Labin number")
+$computerNumber = read("Computer number")
 $isNotebook = readConditional("Is Notebook")
 
-waitKey("Press to start")
 runFunctions
-printInfoSuccess("Finished script")
+
+printImportant("Finished script")
