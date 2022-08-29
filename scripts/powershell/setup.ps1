@@ -120,6 +120,15 @@ function optimizeComputer {
   printSpace
 }
 
+function getWallpapers {
+  $outPath = "$env:USERPROFILE\Documents\Wallpapers"
+
+  printSecondary("Getting wallpapers...")
+  New-Item $outPath -ItemType "directory" | Out-Null
+  Invoke-WebRequest -Uri "https://github.com/dreisss/iespes-extra/raw/main/design/wallpapers/desktop.png" -Outfile "$outPath\desktop.png"
+  Invoke-WebRequest -Uri "https://github.com/dreisss/iespes-extra/raw/main/design/wallpapers/lock.png" -Outfile "$outPath\lock.png"
+}
+
 function styleComputer {
   printImportant("Styling computer")
   printSecondary("Defined system and applications theme to black")
