@@ -145,10 +145,20 @@ function installAppsFromChocolatey {
   }
 }
 
+function installAppsLabin4 {
+  foreach ($app in @("vscode", "git", "python", "mysql")) {
+    printSecondary("$app...")
+    choco install -y $app | Out-Null
+  }
+}
+
 function installApps {
   printImportant("Installing apps")
   installChocolatey
   installAppsFromChocolatey
+  if ($labinNumber -eq 4) {
+    installAppsLabin4
+  }
   printSpace
 }
 
