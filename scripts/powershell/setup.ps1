@@ -152,7 +152,7 @@ function setWallpaper {
 
 function setAccentColor {
   printSecondary("Setting up windows color...")
-  [byte[]]$binaryPaletteCode = "94,e0,b1,00,75,c7,95,00,3d,ad,68,00,10,89,3e,00,0b,5c,2a,00,08,42,1e,00,05,2b,14,00,00,b7,c3,00".Split(',') | ForEach-Object { "0x$_" }
+  [byte[]] $binaryPaletteCode = "94,e0,b1,00,75,c7,95,00,3d,ad,68,00,10,89,3e,00,0b,5c,2a,00,08,42,1e,00,05,2b,14,00,00,b7,c3,00".Split(',') | ForEach-Object { "0x$_" }
 
   foreach ($userSID in getUsersSIDList) {
     Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Accent" -Name "AccentColorMenu" -Value "0xff3e8910"
@@ -231,30 +231,30 @@ function uninstallApps {
 }
 
 # =====================================================================> Running
-# function runFunctions {
-#   renameComputer
-#   createDefaultUser
-#   setNetworkConfig
-#   activateWindows
-#   optimizeComputer
-#   styleComputer
-#   installApps
-#   uninstallApps
-# }
+function runFunctions {
+  renameComputer
+  createDefaultUser
+  setNetworkConfig
+  activateWindows
+  optimizeComputer
+  styleComputer
+  installApps
+  uninstallApps
+}
 
-# if (-not(isRunningAsAdmin)) {
-#   Start-Process powershell -Verb RunAs -ArgumentList ("-Noprofile -ExecutionPolicy Bypass -File "{0}" -Elevated" -f ($myinvocation.MyCommand.Definition))
-#   exit
-# }
+if (-not(isRunningAsAdmin)) {
+  Start-Process powershell -Verb RunAs -ArgumentList ('-Noprofile -ExecutionPolicy Bypass -File "{0}" -Elevated' -f ($myinvocation.MyCommand.Definition))
+  exit
+}
 
-# printSpace
-# printImportant("Starting script")
+printSpace
+printImportant("Starting script")
 
-# [int] $labinNumber = read("Labin number")
-# [int] $computerNumber = read("Computer number")
-# [bool] $isNotebook = readConditional("Is Notebook")
-# printSpace
+[int] $labinNumber = read("Labin number")
+[int] $computerNumber = read("Computer number")
+[bool] $isNotebook = readConditional("Is Notebook")
+printSpace
 
-# runFunctions
-# printImportant("Finished script")
-# printSpace
+runFunctions
+printImportant("Finished script")
+printSpace
