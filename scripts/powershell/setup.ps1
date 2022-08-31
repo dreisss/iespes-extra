@@ -120,13 +120,12 @@ function optimizeComputer {
   printSpace
 }
 
-function getWallpapers {
+function getWallpaper {
   $outPath = "$env:USERPROFILE\Documents\Wallpapers"
 
   printSecondary("Getting wallpapers...")
   New-Item $outPath -ItemType "directory" | Out-Null
-  Invoke-WebRequest -Uri "https://github.com/dreisss/iespes-extra/raw/main/design/wallpapers/desktop.png" -Outfile "$outPath\desktop.png"
-  Invoke-WebRequest -Uri "https://github.com/dreisss/iespes-extra/raw/main/design/wallpapers/lock.png" -Outfile "$outPath\lock.png"
+  Invoke-WebRequest -Uri "https://github.com/dreisss/iespes-extra/raw/main/design/wallpapers/wallpaper.png" -Outfile "$outPath\wallpaper.png"
 }
 
 function styleComputer {
@@ -197,30 +196,30 @@ function uninstallApps {
 }
 
 # =====================================================================> Running
-function runFunctions {
-  renameComputer
-  createDefaultUser
-  setNetworkConfig
-  activateWindows
-  optimizeComputer
-  styleComputer
-  installApps
-  uninstallApps
-}
+# function runFunctions {
+#   renameComputer
+#   createDefaultUser
+#   setNetworkConfig
+#   activateWindows
+#   optimizeComputer
+#   styleComputer
+#   installApps
+#   uninstallApps
+# }
 
-if (-not(isRunningAsAdmin)) {
-  Start-Process powershell -Verb RunAs -ArgumentList ('-Noprofile -ExecutionPolicy Bypass -File "{0}" -Elevated' -f ($myinvocation.MyCommand.Definition))
-  exit
-}
+# if (-not(isRunningAsAdmin)) {
+#   Start-Process powershell -Verb RunAs -ArgumentList ('-Noprofile -ExecutionPolicy Bypass -File "{0}" -Elevated' -f ($myinvocation.MyCommand.Definition))
+#   exit
+# }
 
-printSpace
-printImportant("Starting script")
+# printSpace
+# printImportant("Starting script")
 
-[int] $labinNumber = read("Labin number")
-[int] $computerNumber = read("Computer number")
-[bool] $isNotebook = readConditional("Is Notebook")
-printSpace
+# [int] $labinNumber = read("Labin number")
+# [int] $computerNumber = read("Computer number")
+# [bool] $isNotebook = readConditional("Is Notebook")
+# printSpace
 
-runFunctions
-printImportant("Finished script")
-printSpace
+# runFunctions
+# printImportant("Finished script")
+# printSpace
