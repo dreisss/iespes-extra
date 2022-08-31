@@ -4,15 +4,17 @@ Some side projects related to design:
 
 - [**Iespes Logos**] | Cloned Iespes logos to use in the github repos
 
-  <img height="40px" align="center" src="./logos/iespes_logo.svg">
+  <img height="40px" align="center" src="./logos/logo.svg">
   &nbsp; | &nbsp;
-  <img height="30px" align="center" src="./logos/iespes_logo_e.svg">
-
-- [**Wallpapers**] | Some wallpapers created to be used in the laboratories.
-
-  <img height="100px" align="center" src="./wallpapers/lock.png">
+  <img height="30px" align="center" src="./logos/logo_mini.svg">
   &nbsp; | &nbsp;
-  <img height="100px" align="center" src="./wallpapers/desktop.png">
+  <img height="40px" align="center" src="./logos/logo_glass.svg">
+
+- [**Wallpapers**] | Wallpaper created to be used in the laboratories.
+
+  <img height="100px" align="center" src="./wallpapers/background.png">
+  &nbsp; | &nbsp;
+  <img height="100px" align="center" src="./wallpapers/wallpaper.png">
 
 ## [**Used tools/technologies:**](#used-toolstechnologies)
 
@@ -27,6 +29,6 @@ Some side projects related to design:
 <div>
 
 [**iespes logos**]: ./logos
-[**Wallpapers**]: ./wallpapers
+[**wallpapers**]: ./wallpapers
 [**_`figma`_**]: https://www.figma.com/design/
 [<img height="22px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"/>]: https://www.figma.com/design/

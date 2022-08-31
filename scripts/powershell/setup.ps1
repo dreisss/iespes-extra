@@ -106,7 +106,7 @@ function activateWindows {
   cmd.exe /c slmgr /ato
 }
 
-# ===================================> Config Computer: Styling and Optimization
+# ===============================================> Config Computer: Optimization
 function optimizeComputer {
   printImportant("Optimizing computer")
   printSecondary("Defined performance as priority on configs")
@@ -120,6 +120,36 @@ function optimizeComputer {
   printSpace
 }
 
+# ================================================> Config Computer: Stylization
+function getWallpaper {
+  $outPath = "$env:WINDIR\Personalization"
+
+  printSecondary("Getting wallpapers...")
+  New-Item $outPath -ItemType "directory" | Out-Null
+  Invoke-WebRequest -Uri "https://github.com/dreisss/iespes-extra/raw/main/design/wallpapers/wallpaper.png" -Outfile "$outPath\wallpaper.png"
+}
+
+function setDesktopWallpaper {
+  printSecondary("Setting up the desktop wallpaper...")
+  foreach ($userSID in getUsersSIDList) {
+    Set-ItemProperty "Registry::HKEY_USERS\$userSID\Control Panel\Desktop\" -Name "Wallpaper" -Value "$env:WINDIR\Personalization\wallpaper.png"
+    Set-ItemProperty "Registry::HKEY_USERS\$userSID\Control Panel\Desktop\" -Name "TileWallpaper" -Value 0
+    Set-ItemProperty "Registry::HKEY_USERS\$userSID\Control Panel\Desktop\" -Name "WallpaperStyle" -Value 10 -Force
+  }
+}
+
+function setLockScreenWallpaper {
+  printSecondary("Setting up the lock screen wallpaper...")
+  New-Item "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" | Out-Null
+  New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" -Name "LockScreenImageStatus" -Value 1 -PropertyType DWORD | Out-Null
+  New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" -Name "LockScreenImagePath" -Value "$env:WINDIR\Personalization\wallpaper.png" -PropertyType STRING | Out-Null
+}
+
+function setWallpaper {
+  setDesktopWallpaper
+  setLockScreenWallpaper
+}
+
 function styleComputer {
   printImportant("Styling computer")
   printSecondary("Defined system and applications theme to black")
@@ -129,13 +159,14 @@ function styleComputer {
     Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "AppsUseLightTheme" -Value 0
     Set-ItemProperty "Registry::HKEY_USERS\$userSID\Control Panel\Desktop" -Name "FontSmoothing" -Value 2
   }
+  setWallpaper
   printSpace
 }
 
 # ============================================================> Apps: Installing
 function installChocolatey {
   printSecondary("chocolatey...")
-  [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+  [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString("https://community.chocolatey.org/install.ps1"))
 }
 
 function installAppsFromChocolatey {
@@ -188,30 +219,30 @@ function uninstallApps {
 }
 
 # =====================================================================> Running
-function runFunctions {
-  renameComputer
-  createDefaultUser
-  setNetworkConfig
-  activateWindows
-  optimizeComputer
-  styleComputer
-  installApps
-  uninstallApps
-}
+# function runFunctions {
+#   renameComputer
+#   createDefaultUser
+#   setNetworkConfig
+#   activateWindows
+#   optimizeComputer
+#   styleComputer
+#   installApps
+#   uninstallApps
+# }
 
-if (-not(isRunningAsAdmin)) {
-  Start-Process powershell -Verb RunAs -ArgumentList ('-Noprofile -ExecutionPolicy Bypass -File "{0}" -Elevated' -f ($myinvocation.MyCommand.Definition))
-  exit
-}
+# if (-not(isRunningAsAdmin)) {
+#   Start-Process powershell -Verb RunAs -ArgumentList ("-Noprofile -ExecutionPolicy Bypass -File "{0}" -Elevated" -f ($myinvocation.MyCommand.Definition))
+#   exit
+# }
 
-printSpace
-printImportant("Starting script")
+# printSpace
+# printImportant("Starting script")
 
-[int] $labinNumber = read("Labin number")
-[int] $computerNumber = read("Computer number")
-[bool] $isNotebook = readConditional("Is Notebook")
-printSpace
+# [int] $labinNumber = read("Labin number")
+# [int] $computerNumber = read("Computer number")
+# [bool] $isNotebook = readConditional("Is Notebook")
+# printSpace
 
-runFunctions
-printImportant("Finished script")
-printSpace
+# runFunctions
+# printImportant("Finished script")
+# printSpace
