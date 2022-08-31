@@ -121,7 +121,7 @@ function optimizeComputer {
 }
 
 function getWallpaper {
-  $outPath = "$env:USERPROFILE\Documents\Wallpapers"
+  $outPath = "$env:WINDIR\Personalization"
 
   printSecondary("Getting wallpapers...")
   New-Item $outPath -ItemType "directory" | Out-Null
