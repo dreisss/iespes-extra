@@ -106,7 +106,7 @@ function activateWindows {
   cmd.exe /c slmgr /ato
 }
 
-# ===================================> Config Computer: Styling and Optimization
+# ===============================================> Config Computer: Optimization
 function optimizeComputer {
   printImportant("Optimizing computer")
   printSecondary("Defined performance as priority on configs")
@@ -120,6 +120,7 @@ function optimizeComputer {
   printSpace
 }
 
+# ================================================> Config Computer: Stylization
 function getWallpaper {
   $outPath = "$env:WINDIR\Personalization"
 
@@ -129,6 +130,7 @@ function getWallpaper {
 }
 
 function setDesktopWallpaper {
+  printSecondary("Setting up the desktop wallpaper...")
   foreach ($userSID in getUsersSIDList) {
     Set-ItemProperty "Registry::HKEY_USERS\$userSID\Control Panel\Desktop\" -Name "Wallpaper" -Value "$env:WINDIR\Personalization\wallpaper.png"
     Set-ItemProperty "Registry::HKEY_USERS\$userSID\Control Panel\Desktop\" -Name "TileWallpaper" -Value 0
@@ -137,6 +139,7 @@ function setDesktopWallpaper {
 }
 
 function setLockScreenWallpaper {
+  printSecondary("Setting up the lock screen wallpaper...")
   New-Item "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" | Out-Null
   New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" -Name "LockScreenImageStatus" -Value 1 -PropertyType DWORD | Out-Null
   New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" -Name "LockScreenImagePath" -Value "$env:WINDIR\Personalization\wallpaper.png" -PropertyType STRING | Out-Null
@@ -156,6 +159,7 @@ function styleComputer {
     Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "AppsUseLightTheme" -Value 0
     Set-ItemProperty "Registry::HKEY_USERS\$userSID\Control Panel\Desktop" -Name "FontSmoothing" -Value 2
   }
+  setWallpaper
   printSpace
 }
 
