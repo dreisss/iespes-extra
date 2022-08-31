@@ -150,6 +150,17 @@ function setWallpaper {
   setLockScreenWallpaper
 }
 
+function setAccentColor {
+  printSecondary("Setting up windows color...")
+  [byte[]]$binaryPaletteCode = "94,e0,b1,00,75,c7,95,00,3d,ad,68,00,10,89,3e,00,0b,5c,2a,00,08,42,1e,00,05,2b,14,00,00,b7,c3,00".Split(',') | ForEach-Object { "0x$_" }
+
+  foreach ($userSID in getUsersSIDList) {
+    Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Accent" -Name "AccentColorMenu" -Value "0xff3e8910"
+    Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Accent" -Name "AccentPalette" -Value $binaryPaletteCode
+    Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Accent" -Name "StartColorMenu" -Value "0xff2a5c0b"
+  }
+}
+
 function styleComputer {
   printImportant("Styling computer")
   printSecondary("Defined system and applications theme to black")
@@ -159,6 +170,7 @@ function styleComputer {
     Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "AppsUseLightTheme" -Value 0
     Set-ItemProperty "Registry::HKEY_USERS\$userSID\Control Panel\Desktop" -Name "FontSmoothing" -Value 2
   }
+  setAccentColor
   setWallpaper
   printSpace
 }
