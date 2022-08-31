@@ -128,6 +128,14 @@ function getWallpaper {
   Invoke-WebRequest -Uri "https://github.com/dreisss/iespes-extra/raw/main/design/wallpapers/wallpaper.png" -Outfile "$outPath\wallpaper.png"
 }
 
+function setWallpaper {
+  foreach ($userSID in getUsersSIDList) {
+    Set-ItemProperty "Registry::HKEY_USERS\$userSID\Control Panel\Desktop\" -Name "Wallpaper" -Value "$env:WINDIR\Personalization\wallpaper.png"
+    Set-ItemProperty "Registry::HKEY_USERS\$userSID\Control Panel\Desktop\" -Name "TileWallpaper" -Value 0
+    Set-ItemProperty "Registry::HKEY_USERS\$userSID\Control Panel\Desktop\" -Name "WallpaperStyle" -Value 10 -Force
+  }
+}
+
 function styleComputer {
   printImportant("Styling computer")
   printSecondary("Defined system and applications theme to black")
@@ -143,7 +151,7 @@ function styleComputer {
 # ============================================================> Apps: Installing
 function installChocolatey {
   printSecondary("chocolatey...")
-  [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+  [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString("https://community.chocolatey.org/install.ps1"))
 }
 
 function installAppsFromChocolatey {
@@ -208,7 +216,7 @@ function uninstallApps {
 # }
 
 # if (-not(isRunningAsAdmin)) {
-#   Start-Process powershell -Verb RunAs -ArgumentList ('-Noprofile -ExecutionPolicy Bypass -File "{0}" -Elevated' -f ($myinvocation.MyCommand.Definition))
+#   Start-Process powershell -Verb RunAs -ArgumentList ("-Noprofile -ExecutionPolicy Bypass -File "{0}" -Elevated" -f ($myinvocation.MyCommand.Definition))
 #   exit
 # }
 
