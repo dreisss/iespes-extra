@@ -1,6 +1,6 @@
 <h1 align="center">
   <a href="https://www.iespes.com.br">
-    <img height="60px" src="./design/logos/iespes_logo.svg"/>
+    <img height="60px" src="./design/logos/logo.svg"/>
   </a>
 </h1>
 
