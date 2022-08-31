@@ -128,12 +128,23 @@ function getWallpaper {
   Invoke-WebRequest -Uri "https://github.com/dreisss/iespes-extra/raw/main/design/wallpapers/wallpaper.png" -Outfile "$outPath\wallpaper.png"
 }
 
-function setWallpaper {
+function setDesktopWallpaper {
   foreach ($userSID in getUsersSIDList) {
     Set-ItemProperty "Registry::HKEY_USERS\$userSID\Control Panel\Desktop\" -Name "Wallpaper" -Value "$env:WINDIR\Personalization\wallpaper.png"
     Set-ItemProperty "Registry::HKEY_USERS\$userSID\Control Panel\Desktop\" -Name "TileWallpaper" -Value 0
     Set-ItemProperty "Registry::HKEY_USERS\$userSID\Control Panel\Desktop\" -Name "WallpaperStyle" -Value 10 -Force
   }
+}
+
+function setLockScreenWallpaper {
+  New-Item "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" | Out-Null
+  New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" -Name "LockScreenImageStatus" -Value 1 -PropertyType DWORD | Out-Null
+  New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" -Name "LockScreenImagePath" -Value "$env:WINDIR\Personalization\wallpaper.png" -PropertyType STRING | Out-Null
+}
+
+function setWallpaper {
+  setDesktopWallpaper
+  setLockScreenWallpaper
 }
 
 function styleComputer {
