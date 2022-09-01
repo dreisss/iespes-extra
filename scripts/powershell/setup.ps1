@@ -178,6 +178,15 @@ function styleComputer {
   printSpace
 }
 
+# ======================================================> Config Computer: Other
+function configComputerOther {
+  printImportant("Other computer configurations")
+  printSecondary("Disabled Bing search on Windows menu")
+  foreach ($userSID in getUsersSIDList) {
+    Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Search" -Name "BingSearchEnabled" -Type "DWord" -Value 0
+  }
+}
+
 # ============================================================> Apps: Installing
 function installChocolatey {
   printSecondary("chocolatey...")
@@ -240,6 +249,7 @@ function runFunctions {
   activateWindows
   optimizeComputer
   styleComputer
+  configComputerOther
   installApps
   uninstallApps
 }
