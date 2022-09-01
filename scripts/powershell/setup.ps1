@@ -131,21 +131,18 @@ function getWallpaper {
 
 function setDesktopWallpaper {
   printSecondary("Setting up the desktop wallpaper...")
-  foreach ($userSID in getUsersSIDList) {
-    Set-ItemProperty "Registry::HKEY_USERS\$userSID\Control Panel\Desktop\" -Name "Wallpaper" -Value "$env:WINDIR\Personalization\wallpaper.png"
-    Set-ItemProperty "Registry::HKEY_USERS\$userSID\Control Panel\Desktop\" -Name "TileWallpaper" -Value 0
-    Set-ItemProperty "Registry::HKEY_USERS\$userSID\Control Panel\Desktop\" -Name "WallpaperStyle" -Value 10 -Force
-  }
+  New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" -Name "DesktopImageStatus" -Value 1 -PropertyType DWORD | Out-Null
+  New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" -Name "DesktopImagePath" -Value "$env:WINDIR\Personalization\wallpaper.png" -PropertyType STRING | Out-Null
 }
 
 function setLockScreenWallpaper {
   printSecondary("Setting up the lock screen wallpaper...")
-  New-Item "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" | Out-Null
   New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" -Name "LockScreenImageStatus" -Value 1 -PropertyType DWORD | Out-Null
   New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" -Name "LockScreenImagePath" -Value "$env:WINDIR\Personalization\wallpaper.png" -PropertyType STRING | Out-Null
 }
 
 function setWallpaper {
+  New-Item "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" | Out-Null
   setDesktopWallpaper
   setLockScreenWallpaper
 }
@@ -206,7 +203,6 @@ function installApps {
 }
 
 # ==========================================================> Apps: Uninstalling
-
 function uninstallWindowsDefaultApps {
   foreach ($app in $WINDOWS_DEFAULT_APPS_TO_UNINSTALL) {
     printSecondary("$app...")
