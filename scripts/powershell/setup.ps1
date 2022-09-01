@@ -186,7 +186,7 @@ function installAppsFromChocolatey {
 }
 
 function installAppsLabin4 {
-  foreach ($app in @("vscode", "git", "python", "mysql")) {
+  foreach ($app in @("git", "python", "mysql", "vscode", "pycharm-community")) {
     printSecondary("$app...")
     choco install -y $app | Out-Null
   }
