@@ -172,6 +172,11 @@ function styleComputer {
   printSpace
 }
 
+# =============================================> Config Computer: Group Policies
+function setGroupPolicies {
+  printImportant("Setting group policies...")
+}
+
 # ============================================================> Apps: Installing
 function installChocolatey {
   printSecondary("chocolatey...")
@@ -234,6 +239,7 @@ function runFunctions {
   activateWindows
   optimizeComputer
   styleComputer
+  setGroupPolicies
   installApps
   uninstallApps
 }
