@@ -107,6 +107,11 @@ function activateWindows {
 }
 
 # ===============================================> Config Computer: Optimization
+function disableTelemetry {
+  printSecondary("Disabled windows telemetry")
+  Set-ItemProperty "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name "AllowTelemetry" -Type "DWord" -Value 0
+}
+
 function optimizeComputer {
   printImportant("Optimizing computer")
   printSecondary("Defined performance as priority on configs")
@@ -117,6 +122,7 @@ function optimizeComputer {
     Set-ItemProperty "Registry::HKEY_USERS\$userSID\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" -Name "GlobalUserDisabled" -Value 1
     Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "EnableTransparency" -Value 0
   }
+  disableTelemetry
   printSpace
 }
 
@@ -131,14 +137,14 @@ function getWallpaper {
 
 function setDesktopWallpaper {
   printSecondary("Setting up the desktop wallpaper...")
-  New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" -Name "DesktopImageStatus" -Value 1 -PropertyType DWORD | Out-Null
-  New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" -Name "DesktopImagePath" -Value "$env:WINDIR\Personalization\wallpaper.png" -PropertyType STRING | Out-Null
+  New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" -Name "DesktopImageStatus" -Value 1 -PropertyType "DWord" | Out-Null
+  New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" -Name "DesktopImagePath" -Value "$env:WINDIR\Personalization\wallpaper.png" -PropertyType "String" | Out-Null
 }
 
 function setLockScreenWallpaper {
   printSecondary("Setting up the lock screen wallpaper...")
-  New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" -Name "LockScreenImageStatus" -Value 1 -PropertyType DWORD | Out-Null
-  New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" -Name "LockScreenImagePath" -Value "$env:WINDIR\Personalization\wallpaper.png" -PropertyType STRING | Out-Null
+  New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" -Name "LockScreenImageStatus" -Value 1 -PropertyType "DWord" | Out-Null
+  New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" -Name "LockScreenImagePath" -Value "$env:WINDIR\Personalization\wallpaper.png" -PropertyType "String" | Out-Null
 }
 
 function setWallpaper {
@@ -214,7 +220,7 @@ function uninstallWindowsDefaultApps {
 function uninstallOneDrive {
   printSecondary("Microsoft.OneDrive")
   foreach ($userSID in getUsersSIDList) {
-    $uninstallerPath = Get-ItemPropertyValue "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OneDriveSetup.exe" -Name UninstallString
+    $uninstallerPath = Get-ItemPropertyValue "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OneDriveSetup.exe" -Name "UninstallString"
     cmd.exe /c $uninstallerPath
   }
 }
