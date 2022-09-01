@@ -176,12 +176,8 @@ function styleComputer {
 function lockComputerAppearence {
   printSecondary("Locked system colors")
   printSecondary("Locked system theme")
-  foreach ($userSID in getUsersSIDList) {
-    New-Item "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" | Out-Null
-    New-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "NoDispAppearancePage" -Value 1 -PropertyType "DWord" | Out-Null
-    New-Item "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" | Out-Null
-    New-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "NoThemesTab" -Value 1 -PropertyType "DWord" | Out-Null
-  }
+  New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "NoDispAppearancePage" -Value 1 -PropertyType "DWord" | Out-Null
+  New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "NoThemesTab" -Value 1 -PropertyType "DWord" | Out-Null
 }
 
 function setGroupPolicies {
