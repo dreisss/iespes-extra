@@ -233,7 +233,7 @@ function installAppsFromChocolatey {
 function installAppsLabin4 {
   foreach ($app in @("git", "python", "sqlite", "vscode", "pycharm-community")) {
     printSecondary("$app...")
-    choco.exe install -y $app | Out-Null
+    choco.exe install $app -y -f | Out-Null
   }
 }
 
@@ -296,14 +296,16 @@ printSpace
 printImportant("Starting script")
 
 [bool] $isConfigured = readConditional("Is Configured")
+[int] $labinNumber = read("Labin number")
 
 if (-not $isConfigured) {
-  [int] $labinNumber = read("Labin number")
   [int] $computerNumber = read("Computer number")
   [bool] $isNotebook = readConditional("Is Notebook")
 }
 printSpace
 
 runFunctions
+
+Set-ExecutionPolicy "Restricted" -Scope "LocalMachine" -Force
 printImportant("Finished script")
 printSpace
