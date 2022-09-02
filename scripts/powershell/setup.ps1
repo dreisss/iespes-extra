@@ -131,7 +131,7 @@ function getWallpaper {
   $outPath = "$env:WINDIR\Personalization"
 
   printSecondary("Getting wallpapers...")
-  New-Item $outPath -ItemType "directory" | Out-Null
+  New-Item $outPath -ItemType "Directory" | Out-Null
   Invoke-WebRequest -Uri "https://github.com/dreisss/iespes-extra/raw/main/design/wallpapers/wallpaper.png" -Outfile "$outPath\wallpaper.png"
 }
 
@@ -206,12 +206,15 @@ function configComputerOther {
   printSecondary("Setting up explorer home page to 'This PC' folder")
   printSecondary("Disabled showing recent files/folders on 'quick access' in explorer")
   printSecondary("Disabled showing frequent files/folders on 'quick access' in explorer")
+  printSecondary("Disabled monitor and standby timeout")
   foreach ($userSID in getUsersSIDList) {
     Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Search" -Name "BingSearchEnabled" -Type "DWord" -Value 0
     Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "LaunchTo" -Type "DWord" -Value 1
     Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" -Name "ShowRecent" -Type "DWord" -Value 0
     Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" -Name "ShowFrequent" -Type "DWord" -Value 0
   }
+  powercfg.exe -change -monitor-timeout-ac 0
+  powercfg.exe -change -standby-timeout-ac 0
 }
 
 # ============================================================> Apps: Installing
@@ -223,14 +226,14 @@ function installChocolatey {
 function installAppsFromChocolatey {
   foreach ($app in @("winrar", "adobereader", "avastfreeantivirus")) {
     printSecondary("$app...")
-    choco install -y $app | Out-Null
+    choco.exe install -y $app | Out-Null
   }
 }
 
 function installAppsLabin4 {
   foreach ($app in @("git", "python", "sqlite", "vscode", "pycharm-community")) {
     printSecondary("$app...")
-    choco install -y $app | Out-Null
+    choco.exe install -y $app | Out-Null
   }
 }
 
