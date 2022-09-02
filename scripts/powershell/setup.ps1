@@ -270,10 +270,12 @@ function uninstallApps {
 
 # =====================================================================> Running
 function runFunctions {
-  renameComputer
-  createDefaultUser
-  setNetworkConfig
-  activateWindows
+  if (-not $isConfigured) {
+    renameComputer
+    createDefaultUser
+    setNetworkConfig
+    activateWindows
+  }
   optimizeComputer
   styleComputer
   setGroupPolicies
@@ -290,9 +292,13 @@ if (-not(isRunningAsAdmin)) {
 printSpace
 printImportant("Starting script")
 
-[int] $labinNumber = read("Labin number")
-[int] $computerNumber = read("Computer number")
-[bool] $isNotebook = readConditional("Is Notebook")
+[bool] $isConfigured = readConditional("Is Configured")
+
+if (-not $isConfigured) {
+  [int] $labinNumber = read("Labin number")
+  [int] $computerNumber = read("Computer number")
+  [bool] $isNotebook = readConditional("Is Notebook")
+}
 printSpace
 
 runFunctions
