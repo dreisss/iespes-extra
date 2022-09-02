@@ -149,6 +149,7 @@ function setLockScreenWallpaper {
 
 function setWallpaper {
   New-Item "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" | Out-Null
+  getWallpaper
   setDesktopWallpaper
   setLockScreenWallpaper
 }
@@ -227,7 +228,7 @@ function installAppsFromChocolatey {
 }
 
 function installAppsLabin4 {
-  foreach ($app in @("git", "python", "mysql", "vscode", "pycharm-community")) {
+  foreach ($app in @("git", "python", "sqlite", "vscode", "pycharm-community")) {
     printSecondary("$app...")
     choco install -y $app | Out-Null
   }
