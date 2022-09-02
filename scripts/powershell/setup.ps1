@@ -143,6 +143,7 @@ function setLockScreenWallpaper {
 
 function setWallpaper {
   New-Item "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" | Out-Null
+  getWallpaper
   setDesktopWallpaper
   setLockScreenWallpaper
 }
