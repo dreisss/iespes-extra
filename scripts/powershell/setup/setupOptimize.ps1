@@ -1,18 +1,22 @@
-function disableTelemetry {
-  Set-ItemProperty "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name "AllowTelemetry" -Type "DWord" -Value 0
+function print ( [string] $text ) {
+  Write-Host -ForegroundColor "Blue" "  $text"
 }
 
+# ===================================================================> Functions
 function optimizeComputer {
-  Write-Host " > Optimizing computer configs... " -BackgroundColor "Blue" -ForegroundColor "Black"
+  Set-ItemProperty -Type "DWord" -Value 0 -Name "AllowTelemetry" "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection"
+  print("Disabled Telemetry")
 
-  foreach ($userSID in getUsersSIDList) {
-    Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" -Name "VisualFXSetting" -Value 2
-    Set-ItemProperty "Registry::HKEY_USERS\$userSID\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" -Name "GlobalUserDisabled" -Value 1
-    Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "EnableTransparency" -Value 0
-  }
-  disableTelemetry
+  Set-ItemProperty -Type "DWord" -Value 2 -Name "VisualFXSetting" "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects"
+  print("Configured visual effects to minimal")
 
-  Write-Host ""
+  New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy" | Out-Null
+  Set-ItemProperty -Type "DWord" -Value 2 -Name "LetAppsRunInBackground" "HKLM:\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy"
+  print("Disabled background applications")
+
+  # FIXME: Disable transparency effects to all users function
+  print("Disabled transparency effects")
 }
 
+# =====================================================================> Running
 optimizeComputer
