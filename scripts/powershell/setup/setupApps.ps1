@@ -50,10 +50,8 @@ function uninstallWindowsDefaultApps {
 }
 
 function uninstallOneDrive {
-  foreach ($userSID in getUsersSIDList) {
-    $uninstallerPath = Get-ItemPropertyValue "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OneDriveSetup.exe" -Name "UninstallString"
-    cmd.exe /c $uninstallerPath
-  }
+  taskkill.exe /f /im "OneDrive.exe" | Out-Null
+  cmd.exe /c "$env:SystemRoot\SysWOW64\OneDriveSetup.exe" /uninstall | Out-Null
 }
 
 function uninstallApps {
