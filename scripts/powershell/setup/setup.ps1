@@ -1,21 +1,29 @@
+function print( [string] $text, [string] $color = "Blue") {
+  Write-Host -ForegroundColor $color "   $text"
+}
+
+function important( [string] $text, [string] $color = "Blue") {
+  Write-Host ""
+  Write-Host -BackgroundColor "Black"  -ForegroundColor $color " | $text | "
+  Write-Host ""
+}
+
 function isRunningAsAdmin {
   $currentProcess = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
   return $currentProcess.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 }
 
 function isNetworkAvailable {
-  return (Test-NetConnection "google.com.br").PingSucceeded
+  return Test-Connection -Quiet "google.com.br"
 }
 
 # ================================================> Setup network configurations
 function setNetworkConfigNotebook {
-  Write-Host "   Wi-fi not connected. Click any key when connected:" -ForegroundColor "Blue"
+  print("Wi-fi not connected. Press any key when connected:")
   [System.Console]::ReadKey($true) | Out-Null
 }
 
 function setNetworkConfigDesktop {
-  Write-Host "   Setting up IPV4 Address, default Gateway and DNS addresses..." -ForegroundColor "Blue"
-
   $ipAddress = "192.168.$($labinNumber).$($computerNumber + 1)"
   $defaultGateway = "192.168.$($labinNumber).1"
   $ServerAddresses = @("8.8.8.8", "8.8.4.4")
@@ -25,56 +33,44 @@ function setNetworkConfigDesktop {
 }
 
 function setNetworkConfig {
-  Write-Host " > Configuring network connection... " -BackgroundColor "Blue"  -ForegroundColor "Black"
+  if ($isNotebook) { setNetworkConfigNotebook } else { setNetworkConfigDesktop }
+}
 
+function verifyNetworkConnection {
   if (-not(isNetworkAvailable)) {
-    if ($isNotebook) { setNetworkConfigNotebook } else { setNetworkConfigDesktop }
+    print("Test failed! Trying setup network...") -color "Red"
+    setNetworkConfig
+    print("Configured network configuration. Testing connection again...")
 
-    [int] $count = 0
-    while (-not(isNetworkAvailable)) {
-      Write-Host "   Trying internet connection..." -ForegroundColor "Blue"
-
-      if ($count -eq 5) {
-        Write-Host " > Internet connection failed. Stopping script... " -BackgroundColor "Red" -ForegroundColor "Black"
-        Write-Host ""
-        exit
-      }
-
-      $count += 1
-      Start-Sleep 5
+    if (-not(isNetworkAvailable)) {
+      important("Test failed! Breaking script...") -color "Red"
+      exit
     }
   }
 
-  Write-Host " > Connection verified. Continuing script..." -BackgroundColor "Blue" -ForegroundColor "Black"
-  Write-Host ""
+  print("Test successful! Continuing running scripts...") -color "Green"
 }
 
 # ==========================================================> Manage other files
 function downloadScripts {
-  Write-Host " > Downloading configuration files... " -BackgroundColor "Blue" -ForegroundColor "Black"
   foreach ($file in @("General", "Apps", "Optimize", "Style", "Permissions", "Other")) {
-    Write-Host "   Downloading setup$file.ps1 file..." -ForegroundColor "Blue"
+    print("Downloading setup$file.ps1 file...")
     Invoke-WebRequest -Uri "https://raw.githubusercontent.com/dreisss/iespes-extra/main/scripts/powershell/setup/setup$file.ps1" -OutFile "$env:USERPROFILE\Downloads\setup$file.ps1"
   }
-  Write-Host ""
 }
 
 function runScripts {
-  Write-Host " > Running configuration files... " -BackgroundColor "Blue" -ForegroundColor "Black"
   foreach ($file in @("General", "Apps", "Optimize", "Style", "Permissions", "Other")) {
-    Write-Host "   Running setup$file.ps1 file..." -ForegroundColor "Blue"
-    powershell.exe "$env:USERPROFILE\Downloads\setup$file.ps1" $labinNumber $computerNumber
+    important("Running setup$file.ps1 file...") -color "DarkCyan"
+    powershell.exe "$env:USERPROFILE\Downloads\setup$file.ps1" $isNotebook $labinNumber $computerNumber
   }
-  Write-Host ""
 }
 
 function removeScripts {
-  Write-Host " > Deleting configuration files... " -BackgroundColor "Blue" -ForegroundColor "Black"
-  foreach ($file in @("Apps", "General", "Optimize", "Style", "Permissions", "Other")) {
-    Write-Host "   Deleting setup$file.ps1 file..." -ForegroundColor "Blue"
+  foreach ($file in @("General", "Apps", "Optimize", "Style", "Permissions", "Other")) {
+    print("Removing setup$file.ps1 file...")
     Remove-Item "$env:USERPROFILE\Downloads\setup$file.ps1"
   }
-  Write-Host ""
 }
 
 # =============================================================> Running scripts
@@ -83,15 +79,21 @@ if (-not(isRunningAsAdmin)) {
   exit
 }
 
-function run {
-  setNetworkConfig
-  downloadScripts
-  runScripts
-  removeScripts
-}
+important("Starting running script")
+[bool] $isNotebook = (Read-Host "   Is a notebook? (y, N)").Equals("y")
+[int] $labinNumber = Read-Host "   Laboratory number"
+[int] $computerNumber = Read-Host "   Computer number"
 
-[bool] $isNotebook = (Read-Host "is a notebook? (y, N)").Equals("y")
-[int] $labinNumber = Read-Host "Laboratory number"
-[int] $computerNumber = Read-Host "Computer number"
+important("Verifying network connection")
+verifyNetworkConnection
 
-run
+important("Downloading other configuration scripts")
+downloadScripts
+
+important("Running other configuration scripts")
+runScripts
+
+important("Removing other configuration scripts")
+removeScripts
+
+important("Finished script execution")
