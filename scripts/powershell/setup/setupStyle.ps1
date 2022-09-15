@@ -1,3 +1,8 @@
+function print ( [string] $text ) {
+  Write-Host -ForegroundColor "Blue" "  $text"
+}
+
+# ==================================================================> Wallpapers
 function getWallpaper {
   $outPath = "$env:WINDIR\Personalization"
   New-Item $outPath -ItemType "Directory" | Out-Null
@@ -5,40 +10,40 @@ function getWallpaper {
 }
 
 function setDesktopWallpaper {
-  New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" -Name "DesktopImageStatus" -Value 1 -PropertyType "DWord" | Out-Null
-  New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" -Name "DesktopImagePath" -Value "$env:WINDIR\Personalization\wallpaper.png" -PropertyType "String" | Out-Null
+  New-ItemProperty -PropertyType "DWord" -Value 1 -Name "DesktopImageStatus" "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" | Out-Null
+  New-ItemProperty -PropertyType "String" -Value "$env:WINDIR\Personalization\wallpaper.png" -Name "DesktopImagePath" "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" | Out-Null
 }
 
 function setLockScreenWallpaper {
-  New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" -Name "LockScreenImageStatus" -Value 1 -PropertyType "DWord" | Out-Null
-  New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" -Name "LockScreenImagePath" -Value "$env:WINDIR\Personalization\wallpaper.png" -PropertyType "String" | Out-Null
+  New-ItemProperty -PropertyType "DWord" -Value 1 -Name "LockScreenImageStatus" "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" | Out-Null
+  New-ItemProperty -PropertyType "String" -Value "$env:WINDIR\Personalization\wallpaper.png" -Name "LockScreenImagePath" "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" | Out-Null
 }
 
-function setWallpaper {
+function setWallpapers {
+  print("Downloading wallpapers...")
   getWallpaper
+  print("Setting desktop wallpaper...")
   setDesktopWallpaper
+  print("Setting lock screen wallpaper...")
   setLockScreenWallpaper
 }
 
-function setAccentColor {
-  [byte[]] $binaryPaletteCode = "94,e0,b1,00,75,c7,95,00,3d,ad,68,00,10,89,3e,00,0b,5c,2a,00,08,42,1e,00,05,2b,14,00,00,b7,c3,00".Split(',') | ForEach-Object { "0x$_" }
+# ======================================================================> Colors
+function setColorConfigs {
+  print("Setting accent color...")
+  # FIXME: set accent color to all users function
 
-  foreach ($userSID in getUsersSIDList) {
-    Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Accent" -Name "AccentColorMenu" -Value "0xff3e8910"
-    Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Accent" -Name "AccentPalette" -Value $binaryPaletteCode
-    Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Accent" -Name "StartColorMenu" -Value "0xff2a5c0b"
-  }
+  print("Setting system color to black...")
+  # FIXME: set system color to all users function
+
+  print("Setting apps color to black...")
+  # FIXME: set apps color to all users function
+
+  print("Enabling font smoothing again...")
+  # FIXME: enable font smoothing to all users function
 }
 
-function styleComputer {
-  foreach ($userSID in getUsersSIDList) {
-    Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "SystemUsesLightTheme" -Value 0
-    Set-ItemProperty "Registry::HKEY_USERS\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "AppsUseLightTheme" -Value 0
-    Set-ItemProperty "Registry::HKEY_USERS\$userSID\Control Panel\Desktop" -Name "FontSmoothing" -Value 2
-  }
-  setAccentColor
-  setWallpaper
-  printSpace
-}
+# =====================================================================> Running
 
-styleComputer
+setWallpapers
+setColorConfigs
