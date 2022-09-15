@@ -29,18 +29,46 @@ function setWallpapers {
 }
 
 # ======================================================================> Colors
+function setAccentColor {
+  [byte[]] $binaryPaletteCode = "94,e0,b1,00,75,c7,95,00,3d,ad,68,00,10,89,3e,00,0b,5c,2a,00,08,42,1e,00,05,2b,14,00,00,b7,c3,00".Split(',') | ForEach-Object { "0x$_" }
+
+  foreach ($user in @("HKCU:", "Registry::HKEY_USERS\.DEFAULT")) {
+    Set-ItemProperty -Type "String" -Value "0xff3e8910" -Name "AccentColorMenu" "$user\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Accent"
+    Set-ItemProperty -Type "Binary" -Value $binaryPaletteCode -Name "AccentPalette" "$user\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Accent"
+    Set-ItemProperty -Type "String" -Value "0xff2a5c0b" -Name "StartColorMenu" "$user\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Accent"
+  }
+}
+
+function setSystemColor {
+  foreach ($user in @("HKCU:", "Registry::HKEY_USERS\.DEFAULT")) {
+    Set-ItemProperty -Type "DWord" -Value 0 -Name "SystemUsesLightTheme" "$user\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize"
+  }
+}
+
+function setAppsColor {
+  foreach ($user in @("HKCU:", "Registry::HKEY_USERS\.DEFAULT")) {
+    Set-ItemProperty -Type "DWord" -Value 0 -Name "AppsUseLightTheme" "$user\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize"
+  }
+}
+
+function setFontSmoothing {
+  foreach ($user in @("HKCU:", "Registry::HKEY_USERS\.DEFAULT")) {
+    Set-ItemProperty -Type "DWord" -Value 2 -Name "FontSmoothing" "$user\Control Panel\Desktop"
+  }
+}
+
 function setColorConfigs {
   print("Setting accent color...")
-  # FIXME: set accent color to all users function
+  setAccentColor
 
   print("Setting system color to black...")
-  # FIXME: set system color to all users function
+  setSystemColor
 
   print("Setting apps color to black...")
-  # FIXME: set apps color to all users function
+  setAppsColor
 
   print("Enabling font smoothing again...")
-  # FIXME: enable font smoothing to all users function
+  setFontSmoothing
 }
 
 # =====================================================================> Running

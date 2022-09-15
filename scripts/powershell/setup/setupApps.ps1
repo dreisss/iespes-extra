@@ -63,7 +63,6 @@ function uninstallApps {
 }
 
 # =====================================================================> Running
-
 print("> Installing Apps")
 installApps
 

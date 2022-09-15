@@ -3,6 +3,15 @@ function print ( [string] $text ) {
 }
 
 # ===================================================================> Functions
+function disableTransparency {
+  New-Item -Path "Registry::HKEY_USERS\.DEFAULT\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize"
+
+  foreach ($user in @("HKCU:", "Registry::HKEY_USERS\.DEFAULT")) {
+    Set-ItemProperty -Type "DWord" -Value 0 -Name "EnableTransparency" "$user\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize"
+  }
+}
+
+# =====================================================================> Running
 function optimizeComputer {
   Set-ItemProperty -Type "DWord" -Value 0 -Name "AllowTelemetry" "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection"
   print("Disabled Telemetry")
@@ -14,9 +23,8 @@ function optimizeComputer {
   Set-ItemProperty -Type "DWord" -Value 2 -Name "LetAppsRunInBackground" "HKLM:\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy"
   print("Disabled background applications")
 
-  # FIXME: Disable transparency effects to all users function
+  disableTransparency
   print("Disabled transparency effects")
 }
 
-# =====================================================================> Running
 optimizeComputer
