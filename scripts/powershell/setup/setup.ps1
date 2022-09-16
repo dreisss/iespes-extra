@@ -100,4 +100,7 @@ runScripts
 important("Removing other configuration scripts")
 removeScripts
 
+important("Setting execution policy to restricted")
+Set-ExecutionPolicy "Restricted" -Scope "LocalMachine" -Force
+
 important("Finished script execution")

@@ -1,4 +1,4 @@
-Import-Module utilites
+Import-Module "$env:USERPROFILE\Downloads\utilities"
 
 # ===================================================================> Functions
 function disableTransparency {

@@ -1,4 +1,4 @@
-Import-Module utilities
+Import-Module "$env:USERPROFILE\Downloads\utilities"
 [string] $labinNumber = $args[1]
 [string] $computerNumber = $args[2]
 
