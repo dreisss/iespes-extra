@@ -1,5 +1,5 @@
-function print ( [string] $text ) {
-  Write-Host -ForegroundColor "Blue" "  $text"
+function print( [string] $text ) {
+  Write-Host -ForegroundColor "DarkCyan" "   $text"
 }
 
 # ==================================================================> Wallpapers

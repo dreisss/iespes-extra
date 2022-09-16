@@ -1,8 +1,8 @@
 [string] $labinNumber = $args[1]
 [string] $computerNumber = $args[2]
 
-function print( [string] $text) {
-  Write-Host -ForegroundColor "Blue" "   $text"
+function print( [string] $text ) {
+  Write-Host -ForegroundColor "DarkCyan" "   $text"
 }
 
 function formatNumber( [string] $number ) {
