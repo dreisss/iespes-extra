@@ -55,7 +55,7 @@ function verifyNetworkConnection {
 function downloadScripts {
   foreach ($file in @("General", "Apps", "Optimize", "Style", "Permissions", "Other")) {
     print("Downloading setup$file.ps1 file...")
-    Invoke-WebRequest -Uri "https://raw.githubusercontent.com/dreisss/iespes-extra/main/scripts/powershell/setup/setup$file.ps1" -OutFile "$env:USERPROFILE\Downloads\setup$file.ps1"
+    (New-Object System.Net.WebClient).DownloadFile("https://raw.githubusercontent.com/dreisss/iespes-extra/main/scripts/powershell/setup/setup$file.ps1", "$env:USERPROFILE\Downloads\setup$file.ps1")
   }
 }
 

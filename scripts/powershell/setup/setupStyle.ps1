@@ -6,7 +6,7 @@ function print ( [string] $text ) {
 function getWallpaper {
   $outPath = "$env:WINDIR\Personalization"
   New-Item $outPath -ItemType "Directory" | Out-Null
-  Invoke-WebRequest -Uri "https://github.com/dreisss/iespes-extra/raw/main/design/wallpapers/wallpaper.png" -Outfile "$outPath\wallpaper.png"
+  (New-Object System.Net.WebClient).DownloadFile("https://github.com/dreisss/iespes-extra/raw/main/design/wallpapers/wallpaper.png", "$outPath\wallpaper.png")
 }
 
 function setDesktopWallpaper {
