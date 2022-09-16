@@ -1,6 +1,4 @@
-function print( [string] $text ) {
-  Write-Host -ForegroundColor "DarkCyan" "   $text"
-}
+Import-Module utilites
 
 # ===================================================================> Functions
 function disableTransparency {

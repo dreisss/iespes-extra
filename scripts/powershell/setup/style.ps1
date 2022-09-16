@@ -1,6 +1,4 @@
-function print( [string] $text ) {
-  Write-Host -ForegroundColor "DarkCyan" "   $text"
-}
+Import-Module utilities
 
 # ==================================================================> Wallpapers
 function getWallpaper {

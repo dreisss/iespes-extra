@@ -1,13 +1,6 @@
+Import-Module utilities
 [string] $labinNumber = $args[1]
 [string] $computerNumber = $args[2]
-
-function print( [string] $text ) {
-  Write-Host -ForegroundColor "DarkCyan" "   $text"
-}
-
-function formatNumber( [string] $number ) {
-  return $(if ($number.Length -lt 2) { "0$number" } else { $number })
-}
 
 # ===================================================================> Functions
 function renameComputer {

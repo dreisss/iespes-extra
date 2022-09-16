@@ -8,6 +8,7 @@ function important( [string] $text, [string] $color = "Blue") {
   Write-Host ""
 }
 
+# ===================================================================> Utilities
 function isRunningAsAdmin {
   $currentProcess = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
   return $currentProcess.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
@@ -17,7 +18,7 @@ function isNetworkAvailable {
   return Test-Connection -Quiet "google.com.br"
 }
 
-# ================================================> Setup network configurations
+# =====================================================================> Network
 function setNetworkConfigNotebook {
   print("Wi-fi not connected. Press any key when connected:")
   [System.Console]::ReadKey($true) | Out-Null
@@ -51,29 +52,32 @@ function verifyNetworkConnection {
   print("Test successful! Continuing running scripts...") -color "Green"
 }
 
-# ==========================================================> Manage other files
+# =================================================================> Sub-Scripts
 function downloadScripts {
-  foreach ($file in @("General", "Apps", "Optimize", "Style", "Permissions", "Other")) {
-    print("Downloading setup$file.ps1 file...")
-    (New-Object System.Net.WebClient).DownloadFile("https://raw.githubusercontent.com/dreisss/iespes-extra/main/scripts/powershell/setup/setup$file.ps1", "$env:USERPROFILE\Downloads\setup$file.ps1")
+  print("Downloading utilities module file...")
+  (New-Object System.Net.WebClient).DownloadFile("https://raw.githubusercontent.com/dreisss/iespes-extra/main/scripts/powershell/setup/utilities.psm1", "$env:USERPROFILE\Downloads\utilities.psm1")
+
+  foreach ($file in @("general", "apps", "optimize", "style", "permissions", "other")) {
+    print("Downloading $file.ps1 file...")
+    (New-Object System.Net.WebClient).DownloadFile("https://raw.githubusercontent.com/dreisss/iespes-extra/main/scripts/powershell/setup/$file.ps1", "$env:USERPROFILE\Downloads\$file.ps1")
   }
 }
 
 function runScripts {
-  foreach ($file in @("General", "Apps", "Optimize", "Style", "Permissions", "Other")) {
-    important("Running setup$file.ps1 file...") -color "DarkCyan"
-    powershell.exe "$env:USERPROFILE\Downloads\setup$file.ps1" $isNotebook $labinNumber $computerNumber
+  foreach ($file in @("general", "apps", "optimize", "style", "permissions", "other")) {
+    important("Running $file.ps1 file...") -color "DarkCyan"
+    powershell.exe "$env:USERPROFILE\Downloads\$file.ps1" $isNotebook $labinNumber $computerNumber
   }
 }
 
 function removeScripts {
-  foreach ($file in @("General", "Apps", "Optimize", "Style", "Permissions", "Other")) {
-    print("Removing setup$file.ps1 file...")
-    Remove-Item "$env:USERPROFILE\Downloads\setup$file.ps1"
+  foreach ($file in @("general", "apps", "optimize", "style", "permissions", "other")) {
+    print("Removing $file.ps1 file...")
+    Remove-Item "$env:USERPROFILE\Downloads\$file.ps1"
   }
 }
 
-# =============================================================> Running scripts
+# =====================================================================> Running
 if (-not(isRunningAsAdmin)) {
   Start-Process powershell -Verb RunAs -ArgumentList ('-Noprofile -ExecutionPolicy Bypass -File "{0}" -Elevated' -f ($myinvocation.MyCommand.Definition))
   exit
