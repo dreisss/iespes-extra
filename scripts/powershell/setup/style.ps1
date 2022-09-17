@@ -21,6 +21,7 @@ function setWallpapers {
   print("Downloading wallpapers...")
   getWallpaper
   print("Setting desktop wallpaper...")
+  New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP" | Out-Null
   setDesktopWallpaper
   print("Setting lock screen wallpaper...")
   setLockScreenWallpaper
@@ -51,12 +52,13 @@ function setAppsColor {
 
 function setFontSmoothing {
   foreach ($user in @("HKCU:", "Registry::HKEY_USERS\.DEFAULT")) {
-    Set-ItemProperty -Type "DWord" -Value 2 -Name "FontSmoothing" "$user\Control Panel\Desktop"
+    Set-ItemProperty -Type "String" -Value 2 -Name "FontSmoothing" "$user\Control Panel\Desktop"
   }
 }
 
 function setColorConfigs {
   print("Setting accent color...")
+  New-Item -Path "Registry::HKEY_USERS\.DEFAULT\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" | Out-Null
   setAccentColor
 
   print("Setting system color to black...")
