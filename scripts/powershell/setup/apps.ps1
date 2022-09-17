@@ -28,7 +28,7 @@ function installApps {
   print("  Default apps:")
   installDefaultApps
 
-  if ($labinNumber -eq $DEVELOPER_LABIN) {
+  if (isDeveloperLabin($labinNumber)) {
     print
     print("  Developer apps:")
     installDeveloperApps
@@ -37,7 +37,7 @@ function installApps {
 
 # ================================================================> Uninstalling
 function uninstallWindowsDefaultApps {
-  foreach ($app in $WINDOWS_DEFAULT_APPS_TO_UNINSTALL) {
+  foreach ($app in getWindowsDefaultApps) {
     print("    $app...")
     Get-AppxPackage -Name $app -AllUsers | Remove-AppxPackage -AllUsers
     (Get-AppxProvisionedPackage -Online).Where( { $_.DisplayName -eq $app }) | Remove-AppxProvisionedPackage -Online
