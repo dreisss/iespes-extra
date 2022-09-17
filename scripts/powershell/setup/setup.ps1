@@ -71,6 +71,9 @@ function runScripts {
 }
 
 function removeScripts {
+  print("Removing utilities.psm1 file...")
+  Remove-Item "$env:USERPROFILE\Downloads\utilities.psm1"
+
   foreach ($file in @("general", "apps", "optimize", "style", "permissions", "other")) {
     print("Removing $file.ps1 file...")
     Remove-Item "$env:USERPROFILE\Downloads\$file.ps1"
