@@ -9,7 +9,7 @@ function disableBingSearch {
 
 function setExplorerLaunchPage {
   foreach ($user in @("HKCU:", "Registry::HKEY_USERS\.DEFAULT")) {
-    Set-ItemProperty -Type "DWord" -Value 1 -Name "LaunchTo" "$user\$userSID\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+    Set-ItemProperty -Type "DWord" -Value 1 -Name "LaunchTo" "$user\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
   }
 }
 
