@@ -8,7 +8,7 @@ function installChocolatey {
 }
 
 function installDefaultApps {
-  foreach ($app in @("winrar", "adobereader", "cpu-z")) {
+  foreach ($app in @("winrar", "adobereader", "chrome", "avastfreeantivirus", "cpu-z")) {
     print("    $app...")
     choco.exe install $app -y -f | Out-Null
   }
