@@ -66,7 +66,7 @@ function downloadScripts {
 function runScripts {
   foreach ($file in @("general", "apps", "optimize", "style", "permissions", "other")) {
     important("Running $file.ps1 file...") -color "DarkCyan"
-    powershell.exe "$env:USERPROFILE\Downloads\$file.ps1" $isNotebook $labinNumber $computerNumber
+    powershell.exe -file "$env:USERPROFILE\Downloads\$file.ps1" $isNotebook $labinNumber $computerNumber
   }
 }
 
