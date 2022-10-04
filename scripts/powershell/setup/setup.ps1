@@ -50,6 +50,7 @@ function verifyNetworkConnection {
   }
 
   print("Test successful! Continuing running scripts...") -color "Green"
+  Start-Sleep -Seconds 5
 }
 
 # =================================================================> Sub-Scripts
