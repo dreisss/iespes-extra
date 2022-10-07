@@ -15,7 +15,7 @@ function installDefaultApps {
 }
 
 function installDeveloperApps {
-  foreach ($app in @("git", "python", "sqlite", "vscode", "pycharm-community")) {
+  foreach ($app in @("git", "python", "sqlite", "vscode")) {
     print("    $app...")
     choco.exe install $app -y -f | Out-Null
   }
