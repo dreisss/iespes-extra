@@ -3,7 +3,7 @@ Import-Module "$env:USERPROFILE\Downloads\utilities"
 # ===================================================================> Functions
 function disableBingSearch {
   foreach ($user in @("HKCU:", "Registry::HKEY_USERS\.DEFAULT")) {
-    Set-ItemProperty -Type "DWord" -Value 0 -Name "BingSearchEnabled" "$user\SOFTWARE\Microsoft\Windows\CurrentVersion\Search"
+    Set-ItemProperty -Force -Type "DWord" -Value 0 -Name "BingSearchEnabled" "$user\SOFTWARE\Microsoft\Windows\CurrentVersion\Search"
   }
 }
 
@@ -11,14 +11,14 @@ function setExplorerLaunchPage {
   New-Item -Path "Registry::HKEY_USERS\.DEFAULT\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" | Out-Null
 
   foreach ($user in @("HKCU:", "Registry::HKEY_USERS\.DEFAULT")) {
-    Set-ItemProperty -Type "DWord" -Value 1 -Name "LaunchTo" "$user\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+    Set-ItemProperty -Force -Type "DWord" -Value 1 -Name "LaunchTo" "$user\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
   }
 }
 
 function setQuickAccessPage {
   foreach ($user in @("HKCU:", "Registry::HKEY_USERS\.DEFAULT")) {
-    Set-ItemProperty -Type "DWord" -Value 0 -Name "ShowRecent" "$user\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer"
-    Set-ItemProperty -Type "DWord" -Value 0 -Name "ShowFrequent" "$user\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer"
+    Set-ItemProperty -Force -Type "DWord" -Value 0 -Name "ShowRecent" "$user\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer"
+    Set-ItemProperty -Force -Type "DWord" -Value 0 -Name "ShowFrequent" "$user\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer"
   }
 }
 
