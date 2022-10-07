@@ -8,16 +8,16 @@ function installChocolatey {
 }
 
 function installDefaultApps {
-  foreach ($app in @("winrar", "adobereader", "chrome", "avastfreeantivirus", "cpu-z")) {
+  foreach ($app in @("winrar", "adobereader", "chrome", "firefox", "avastfreeantivirus", "cpu-z")) {
     print("    $app...")
-    choco.exe install $app -y -f | Out-Null
+    choco.exe install $app -yf | Out-Null
   }
 }
 
 function installDeveloperApps {
   foreach ($app in @("git", "python", "sqlite", "vscode")) {
     print("    $app...")
-    choco.exe install $app -y -f | Out-Null
+    choco.exe install $app -yf | Out-Null
   }
 }
 
