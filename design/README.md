@@ -1,8 +1,11 @@
-# <img height="32px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"/>&nbsp;**Design**
+[**_`logos`_**]: ./logos
+[**_`wallpapers`_**]: ./wallpapers
 
-Some side projects related to design:
+# [**`Design`**](#design)
 
-- [**Iespes Logos**] | Cloned Iespes logos to use in the github repos
+Design projects made to use in the computer labs:
+
+- [**_`Logos`_**] | Iespes logos made to use in the github repos
 
   <img height="40px" align="center" src="./logos/logo.svg">
   &nbsp; | &nbsp;
@@ -10,25 +13,14 @@ Some side projects related to design:
   &nbsp; | &nbsp;
   <img height="40px" align="center" src="./logos/logo_glass.svg">
 
-- [**Wallpapers**] | Wallpaper created to be used in the laboratories.
+- [**_`Wallpapers`_**] | Wallpaper to be used in the computer labs
 
   <img height="100px" align="center" src="./wallpapers/background.png">
   &nbsp; | &nbsp;
   <img height="100px" align="center" src="./wallpapers/wallpaper.png">
 
-## [**Used tools/technologies:**](#used-toolstechnologies)
-
-- [**_`Figma`_**] [<img height="22px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"/>]
-
-<br>
-
 <div align="right">
 
 [**_`❰ Return to main page`_**](https://github.com/dreisss/iespes-extra)
 
-<div>
-
-[**iespes logos**]: ./logos
-[**wallpapers**]: ./wallpapers
-[**_`figma`_**]: https://www.figma.com/design/
-[<img height="22px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"/>]: https://www.figma.com/design/
+</div>

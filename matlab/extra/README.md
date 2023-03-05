@@ -1,21 +1,18 @@
-# <img height="32px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matlab/matlab-original.svg"/>&nbsp;**Matlab:&nbsp;Extra**
+[**_`extra 01`_**]: ./extra01.m
+[**_`extra 02`_**]: ./extra02.m
+[**_`extra 03`_**]: ./extra03.m
+[**_`extra 04`_**]: ./extra04.m
+[**_`extra 05`_**]: ./extra05.m
 
-**Content:** _"Extra contents"._
+# [**_`Matlab: Extra`_**](#matlab-extra)
 
-<table>
-  <tr>
-    <td> <a href="./extra01.m"> <b> extra01 </b> </a> </td>
-    <td> <a href="./extra02.m"> <b> extra02 </b> </a> </td>
-    <td> <a href="./extra03.m"> <b> extra03 </b> </a> </td>
-    <td> <a href="./extra04.m"> <b> extra04 </b> </a> </td>
-    <td> <a href="./extra05.m"> <b> extra05 </b> </a> </td>
-  </tr>
-</table>
+**Content:** _"Extra Contents"._
 
-<br>
+| [**_`Extra 01`_**] | [**_`Extra 02`_**] | [**_`Extra 03`_**]
+| [**_`Extra 04`_**] | [**_`Extra 05`_**] |
 
 <div align="right">
 
 [**_`❰ Return to main page`_**](../)
 
-<div>
+</div>

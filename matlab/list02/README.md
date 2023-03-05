@@ -1,36 +1,33 @@
-# <img height="32px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matlab/matlab-original.svg"/>&nbsp;**Matlab:&nbsp;List&nbsp;02**
+[**_`pdf`_**]: ./list02.pdf
+[**_`exercise 01`_**]: ./ex01.m
+[**_`exercise 02`_**]: ./ex02.m
+[**_`exercise 03`_**]: ./ex03.m
+[**_`exercise 04`_**]: ./ex04.m
+[**_`exercise 05`_**]: ./ex05.m
+[**_`exercise 06`_**]: ./ex06.m
+[**_`exercise 07`_**]: ./ex07.m
+[**_`exercise 08`_**]: ./ex08.m
+[**_`exercise 09`_**]: ./ex09.m
+[**_`exercise 10`_**]: ./ex10.m
+[**_`exercise 11`_**]: ./ex11.m
+[**_`exercise 12`_**]: ./ex12.m
+[**_`exercise 13`_**]: ./ex13.m
+[**_`exercise 14`_**]: ./ex14.m
+[**_`exercise 15`_**]: ./ex15.m
+
+# [**_`Matlab: List 02`_**](#matlab-list-02)
 
 **Content:** _"Laços de Repetição"._
-See the list pdf [**_here_**](./list02.pdf).
+[**_`pdf`_**]
 
-<table>
-  <tr>
-    <td> <a href="./ex01.m"> <b> ex01 </b> </a> </td>
-    <td> <a href="./ex02.m"> <b> ex02 </b> </a> </td>
-    <td> <a href="./ex03.m"> <b> ex03 </b> </a> </td>
-    <td> <a href="./ex04.m"> <b> ex04 </b> </a> </td>
-    <td> <a href="./ex05.m"> <b> ex05 </b> </a> </td>
-  </tr>
-  <tr>
-    <td> <a href="./ex06.m"> <b> ex06 </b> </a> </td>
-    <td> <a href="./ex07.m"> <b> ex07 </b> </a> </td>
-    <td> <a href="./ex08.m"> <b> ex08 </b> </a> </td>
-    <td> <a href="./ex09.m"> <b> ex09 </b> </a> </td>
-    <td> <a href="./ex10.m"> <b> ex10 </b> </a> </td>
-  </tr>
-  <tr>
-    <td> <a href="./ex11.m"> <b> ex11 </b> </a> </td>
-    <td> <a href="./ex12.m"> <b> ex12 </b> </a> </td>
-    <td> <a href="./ex13.m"> <b> ex13 </b> </a> </td>
-    <td> <a href="./ex14.m"> <b> ex14 </b> </a> </td>
-    <td> <a href="./ex15.m"> <b> ex15 </b> </a> </td>
-  </tr>
-</table>
-
-<br>
+| [**_`Exercise 01`_**] | [**_`Exercise 02`_**] | [**_`Exercise 03`_**]
+| [**_`Exercise 04`_**] | [**_`Exercise 05`_**] | [**_`Exercise 06`_**]
+| [**_`Exercise 07`_**] | [**_`Exercise 08`_**] | [**_`Exercise 09`_**]
+| [**_`Exercise 10`_**] | [**_`Exercise 11`_**] | [**_`Exercise 12`_**]
+| [**_`Exercise 13`_**] | [**_`Exercise 14`_**] | [**_`Exercise 15`_**] |
 
 <div align="right">
 
 [**_`❰ Return to main page`_**](../)
 
-<div>
+</div>

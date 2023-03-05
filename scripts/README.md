@@ -1,43 +1,23 @@
-<h1>
-  <img height="30px" align="center"  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"/>
-  <img height="30px" align="center"  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg"/>
-  <img height="30px" align="center"  src="https://docs.microsoft.com/en-us/powershell/media/index/powershell_128.svg"/>
-  <b> Other Scripts </b>
-</h1>
+[**_`python`_**]: ./python
+[**_`powershell`_**]: ./powershell
+[**_`script01`_**]: ./python/script01.py
+[**_`setup`_**]: ./powershell/setup/
 
-Some other scripts:
+# [**_`Scripts`_**](#scripts)
 
-- [**Python**]
+Some other useful scripts:
 
-  - [**script01**] | Plot a function graph using matplotlib (made to a teacher)
+- [**_`Python`_**]
 
-- [**Powershell**]
-  - [**setup**] | Configure computers at iespes after install windows (used in
-    lab monitoring)
+  - [**_`script01`_**] | Plot a function graph using matplotlib (made to a teacher)
 
-## [**Used tools/technologies:**](#used-toolstechnologies)
+- [**_`Powershell`_**]
 
-- [**_`Python`_**] [<img height="24px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matlab/matlab-original.svg"/>]
-- [**_`Bash`_**] [<img height="24px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg"/>]
-- [**_`Powershell`_**] [<img height="24px" align="center" src="https://docs.microsoft.com/en-us/powershell/media/index/powershell_128.svg"/>]
-
-<br>
+  - [**_`setup`_**] | Configure computers at iespes after install windows (used
+    in lab monitoring)
 
 <div align="right">
 
 [**_`❰ Return to main page`_**](https://github.com/dreisss/iespes-extra)
 
-<div>
-
-[**_`scripts`_**]: https://www.mathworks.com/products/matlab.html
-[<img height="24px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matlab/matlab-original.svg"/>]: https://www.mathworks.com/products/matlab.html
-[**python**]: ./python
-[**powershell**]: ./powershell
-[**script01**]: ./python/script01.py
-[**setup**]: ./powershell/setup.ps1
-[**_`python`_**]: https://www.python.org
-[**_`bash`_**]: https://www.gnu.org/software/bash/
-[**_`powershell`_**]: https://docs.microsoft.com/en-us/powershell/
-[<img height="24px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"/>]: https://www.python.org
-[<img height="24px" align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg"/>]: https://www.gnu.org/software/bash/
-[<img height="24px" align="center" src="https://docs.microsoft.com/en-us/powershell/media/index/powershell_128.svg"/>]: https://docs.microsoft.com/en-us/powershell/
+</div>
