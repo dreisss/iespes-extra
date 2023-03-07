@@ -1,11 +1,10 @@
-[**_`logos`_**]: ./logos
-[**_`wallpapers`_**]: ./wallpapers
+[previous]: https://github.com/dreisss/iespes-extra
 
-# [**`Design`**](#design)
+# [**_`Iespes Extra: Design`_**](#iespes-extra-design)
 
 Design projects made to use in the computer labs:
 
-- [**_`Logos`_**] | Iespes logos made to use in the github repos
+- [**_`Logos`_**](./logos/) | Iespes logos made to use in the github repos
 
   <img height="40px" align="center" src="./logos/logo.svg">
   &nbsp; | &nbsp;
@@ -13,7 +12,7 @@ Design projects made to use in the computer labs:
   &nbsp; | &nbsp;
   <img height="40px" align="center" src="./logos/logo_glass.svg">
 
-- [**_`Wallpapers`_**] | Wallpaper to be used in the computer labs
+- [**_`Wallpapers`_**](./wallpapers/) | Wallpaper to be used in the computer labs
 
   <img height="100px" align="center" src="./wallpapers/background.png">
   &nbsp; | &nbsp;
@@ -21,6 +20,6 @@ Design projects made to use in the computer labs:
 
 <div align="right">
 
-[**_`❰ Return to main page`_**](https://github.com/dreisss/iespes-extra)
+[**_`❰ Return to previous page`_**][previous]
 
 </div>

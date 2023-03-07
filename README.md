@@ -1,26 +1,17 @@
-[**_iespes repo_**]: https://github.com/dreisss/iespes
-[**_`design`_**]: ./design
-[**_`matlab`_**]: ./matlab
-[**_`scripts`_**]: ./scripts
-[**_`other`_**]: ./other
+[**_iespes_**]: https://www.iespes.com.br "Instituto Esperança de Ensino Superior"
+[**_iespes repository_**]: https://github.com/dreisss/iespes "To store and organize projects and things made while I was studying at Iespes."
 
-<h1 align="center">
-  <a href="https://www.iespes.com.br">
-    <img height="60px" src="./design/logos/logo.svg"/>
-  </a>
-</h1>
+# [<img height="50px" src="https://raw.githubusercontent.com/dreisss/iespes-extra/main/design/logos/logo.svg"/>][**_iespes_**]
 
-## [**Description**](#description)
-
-Complementar repository to [**_iespes repo_**]. Here there are some side projects,
+Complementar repository to main [**_iespes repository_**]. Here there are some side projects,
 tools used while I was a monitor in the computer labs and more.
-
-## [**Content**](#content)
 
 The content here is separated as indicated below, click on the section name to
 be redirected.
 
-- [**_`Design`_**] | Design projects made to use in the computer labs
-- [**_`Matlab`_**] | Matlab scripts solving problems requested by a teacher
-- [**_`Scripts`_**] | Some other useful scripts
-- [**_`Other`_**] | Other things not categorized
+- [**_`Design`_**](./design/) | Design projects made to use in the computer labs
+- [**_`Matlab`_**](./matlab/) | Matlab scripts solving problems requested by a teacher
+- [**_`Scripts`_**](./scripts/) | Some other useful scripts
+- [**_`Other`_**](./other/) | Other things not categorized
+
+_Related repository_: [**_iespes repository_**]
