@@ -56,28 +56,28 @@ function verifyNetworkConnection {
 # =================================================================> Sub-Scripts
 function downloadScripts {
   print("Downloading utilities module file...")
-  (New-Object System.Net.WebClient).DownloadFile("https://raw.githubusercontent.com/dreisss/iespes-extra/main/scripts/powershell/setup/utilities.psm1", "$env:USERPROFILE\Downloads\utilities.psm1")
+  (New-Object System.Net.WebClient).DownloadFile("https://raw.githubusercontent.com/dreisss/iespes-extra/main/scripts/powershell/setup/src/utilities.psm1", "$env:TEMP\utilities.psm1")
 
   foreach ($file in @("general", "apps", "optimize", "style", "permissions", "other")) {
     print("Downloading $file.ps1 file...")
-    (New-Object System.Net.WebClient).DownloadFile("https://raw.githubusercontent.com/dreisss/iespes-extra/main/scripts/powershell/setup/$file.ps1", "$env:USERPROFILE\Downloads\$file.ps1")
+    (New-Object System.Net.WebClient).DownloadFile("https://raw.githubusercontent.com/dreisss/iespes-extra/main/scripts/powershell/setup/src/$file.ps1", "$env:TEMP\$file.ps1")
   }
 }
 
 function runScripts {
   foreach ($file in @("general", "apps", "optimize", "style", "permissions", "other")) {
     important("Running $file.ps1 file...") -color "DarkCyan"
-    powershell.exe -file "$env:USERPROFILE\Downloads\$file.ps1" $isNotebook $labinNumber $computerNumber
+    powershell.exe -file "$env:TEMP\$file.ps1" $isNotebook $labinNumber $computerNumber
   }
 }
 
 function removeScripts {
   print("Removing utilities.psm1 file...")
-  Remove-Item "$env:USERPROFILE\Downloads\utilities.psm1"
+  Remove-Item "$env:TEMP\utilities.psm1"
 
   foreach ($file in @("general", "apps", "optimize", "style", "permissions", "other")) {
     print("Removing $file.ps1 file...")
-    Remove-Item "$env:USERPROFILE\Downloads\$file.ps1"
+    Remove-Item "$env:TEMP\$file.ps1"
   }
 }
 

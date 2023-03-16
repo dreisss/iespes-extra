@@ -1,4 +1,4 @@
-Import-Module "$env:USERPROFILE\Downloads\utilities"
+Import-Module "$env:TEMP\utilities"
 [string] $labinNumber = $args[1]
 
 # ==================================================================> Installing

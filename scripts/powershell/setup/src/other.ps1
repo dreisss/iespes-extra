@@ -1,4 +1,4 @@
-Import-Module "$env:USERPROFILE\Downloads\utilities"
+Import-Module "$env:TEMP\utilities"
 
 # ===================================================================> Functions
 function disableBingSearch {
