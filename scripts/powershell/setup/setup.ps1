@@ -1,12 +1,6 @@
-function print( [string] $text, [string] $color = "Blue") {
-  Write-Host -ForegroundColor $color "   $text"
-}
+Import-Module "./utils";
 
-function important( [string] $text, [string] $color = "Blue") {
-  Write-Host ""
-  Write-Host -BackgroundColor "Black"  -ForegroundColor $color " | $text | "
-  Write-Host ""
-}
+$console = createConsole;
 
 # ===================================================================> Utilities
 function isNetworkAvailable {
@@ -15,7 +9,7 @@ function isNetworkAvailable {
 
 # =====================================================================> Network
 function setNetworkConfigNotebook {
-  print("Wi-fi not connected. Press any key when connected:")
+  $console.puts("Wi-fi not connected. Press any key when connected:")
   [System.Console]::ReadKey($true) | Out-Null
 }
 
@@ -34,27 +28,27 @@ function setNetworkConfig {
 
 function verifyNetworkConnection {
   if (-not(isNetworkAvailable)) {
-    print("Test failed! Trying setup network...") -color "Red"
+    $console.error("Test failed! Trying setup network...")
     setNetworkConfig
-    print("Configured network configuration. Testing connection again...")
+    $console.puts("Configured network configuration. Testing connection again...")
 
     if (-not(isNetworkAvailable)) {
-      important("Test failed! Breaking script...") -color "Red"
+      $console.alert_error("Test failed! Breaking script...")
       exit
     }
   }
 
-  print("Test successful! Continuing running scripts...") -color "Green"
+  $console.success("Test successful! Continuing running scripts...")
   Start-Sleep -Seconds 5
 }
 
 # =====================================================================> Running
-important("Starting running script")
-[bool] $isNotebook = (Read-Host "   Is a notebook? (y, N)").Equals("y")
-[int] $labinNumber = Read-Host "   Laboratory number"
-[int] $computerNumber = Read-Host "   Computer number"
+$console.alert("Starting running script")
+[bool] $isNotebook = $console.gets("  Is a notebook? (y, N)").Equals("y")
+[int] $labinNumber = $console.gets("  Laboratory number")
+[int] $computerNumber = $console.gets("  Computer number")
 
-important("Verifying network connection")
+$console.alert("Verifying network connection")
 verifyNetworkConnection
 
 (New-Object System.Net.WebClient).DownloadFile("https://raw.githubusercontent.com/dreisss/iespes-extra/main/scripts/powershell/setup/src/main.ps1", "$env:TEMP\main.ps1")
