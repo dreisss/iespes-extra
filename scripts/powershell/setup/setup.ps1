@@ -11,20 +11,36 @@ try {
   $console = create_console;
   $console.alert("Iniciando execução do script!");
   
-  $console.puts("Informe os dados pedidos abaixo:");
-  [bool] $is_notebook = $console.gets("  É um notebook? (s, N)").Equals("s");
-  [int] $laboratory_number = $console.gets("  Número do laboratório (2..5)");
-  [int] $computer_number = $console.gets("  Número do computador");
-  $console.success("Dados salvos com sucesso!");
+  $console.puts("Verificando se existe cache:");
+  $cache = create_cache_manager($env:TEMP);
+  
+  $console.puts("Procurando por cache...");
+  $cache.read();
+  
+  if ($cache.exist) {
+    $console.puts("Existe cache salvo! Utilizando dados salvos...");
+    [bool] $is_notebook = [bool]::Parse($cache.get("is_notebook"));
+    [int] $laboratory_number = $cache.get("laboratory_number");
+    [int] $computer_number = $cache.get("computer_number");
+    $console.success("Dados utilizados com sucesso!");
+  }
+  else {
+    $console.puts("Não existe cache salvo! Informe os dados pedidos abaixo:");
+    [bool] $is_notebook = $console.gets("  É um notebook? (s, N)").Equals("s");
+    [int] $laboratory_number = $console.gets("  Número do laboratório (2..5)");
+    [int] $computer_number = $console.gets("  Número do computador");
+    $console.success("Dados salvos com sucesso!");
 
-  [hashtable] $data = @{
-    is_notebook       = $is_notebook
-    laboratory_number = $laboratory_number
-    computer_number   = $computer_number
-  };
+    $console.puts("Salvando dados no cache...");
+    $cache.set("is_notebook", $is_notebook);
+    $cache.set("laboratory_number", $laboratory_number);
+    $cache.set("computer_number", $computer_number);
+    $cache.write();
+    $console.success("Cache salvo com sucesso!");
+  }
 
   $console.alert("Verificando conexão com a Internet!");
-  $network = create_network_manager($data);
+  $network = create_network_manager($cache.get_data());
 
   $console.puts("Iniciando teste de conexão:");
   $console.puts("Teste em andamento...");

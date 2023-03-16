@@ -16,6 +16,31 @@ function create_console {
   return New-Object Console;
 }
 
+function create_cache_manager([string] $path) {
+  class CacheManager {
+    [hashtable] $data; [string] $path; [bool] $exist;
+
+    CacheManager([string] $path) {
+      $this.path = $path;
+    }
+    
+    [void] read() {
+      if ($this.data = Get-Content "$($this.path)/setup_cache" -ErrorAction "SilentlyContinue" | ConvertFrom-Json -AsHashtable) {
+        $this.exist = $true;
+        return;
+      }
+      $this.data = @{};
+    }
+
+    [void] write() { ConvertTo-Json $this.data | Set-Content "$($this.path)/setup_cache"; }
+    [void] set([string] $key, [string] $value) { $this.data[$key] = $value; }
+    [string] get([string] $key) { return $this.data[$key]; } 
+    [hashtable] get_data() { return $this.data; }
+  }
+
+  return New-Object CacheManager($path);
+}
+
 function create_network_manager([hashtable] $data) {
   class NetworkManager {
     [string] $ip; [string] $gateway; [bool] $has_connection;
