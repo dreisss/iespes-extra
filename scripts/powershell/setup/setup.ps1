@@ -1,55 +1,66 @@
+#!/usr/bin/env pwsh
+
 Import-Module "./utils";
 
-$console = createConsole;
-
-# ===================================================================> Utilities
-function isNetworkAvailable {
-  return Test-Connection -Quiet "google.com.br"
+if (-not(running_as_admin)) {
+  Start-Process powershell -Verb RunAs -ArgumentList ('-Noprofile -ExecutionPolicy Bypass -File "{0}" -Elevated' -f ($myinvocation.MyCommand.Definition));
+  exit;
 }
 
-# =====================================================================> Network
-function setNetworkConfigNotebook {
-  $console.puts("Wi-fi not connected. Press any key when connected:")
-  [System.Console]::ReadKey($true) | Out-Null
-}
+try {
+  $console = create_console;
+  $console.alert("Iniciando execução do script!");
+  
+  $console.puts("Informe os dados pedidos abaixo:");
+  [bool] $is_notebook = $console.gets("  É um notebook? (s, N)").Equals("s");
+  [int] $laboratory_number = $console.gets("  Número do laboratório (2..5)");
+  [int] $computer_number = $console.gets("  Número do computador");
+  $console.success("Dados salvos com sucesso!");
 
-function setNetworkConfigDesktop {
-  $ipAddress = "192.168.$($labinNumber).$($computerNumber + 1)"
-  $defaultGateway = "192.168.$($labinNumber).1"
-  $ServerAddresses = @("8.8.8.8", "8.8.4.4")
+  [hashtable] $data = @{
+    is_notebook       = $is_notebook
+    laboratory_number = $laboratory_number
+    computer_number   = $computer_number
+  };
 
-  New-NetIPAddress -InterfaceAlias "Ethernet" -AddressFamily "ipv4" -IPAddress $ipAddress -PrefixLength 24 -DefaultGateway $defaultGateway | Out-Null
-  Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses $ServerAddresses | Out-Null
-}
+  $console.alert("Verificando conexão com a Internet!");
+  $network = create_network_manager($data);
 
-function setNetworkConfig {
-  if ($isNotebook) { setNetworkConfigNotebook } else { setNetworkConfigDesktop }
-}
+  $console.puts("Iniciando teste de conexão:");
+  $console.puts("Teste em andamento...");
+  $network.try_connection();
+  
+  if (-not($network.has_connection)) {
+    $console.error("O teste de conexão falhou! Configurando novamente...");
+    $network.configure();
 
-function verifyNetworkConnection {
-  if (-not(isNetworkAvailable)) {
-    $console.error("Test failed! Trying setup network...")
-    setNetworkConfig
-    $console.puts("Configured network configuration. Testing connection again...")
+    $console.puts("Teste em andamento...");
+    $network.try_connection();
 
-    if (-not(isNetworkAvailable)) {
-      $console.alert_error("Test failed! Breaking script...")
-      exit
+    if (-not($network.has_connection)) {
+      $console.alert_error("O teste de conexão falhou novamente! Parando execução do script!");
+      Throw;
     }
   }
 
-  $console.success("Test successful! Continuing running scripts...")
-  Start-Sleep -Seconds 5
+  $console.success("Teste de conexão bem sucedido! Continuando execução do script!");
+
+  $console.alert("Baixando e executando inicializador do script!");
+  $console.puts("Baixando inicializador...");
+  [System.Net.WebClient] $web_client = New-Object System.Net.WebClient;
+  $web_client.DownloadFile("https://raw.githubusercontent.com/dreisss/iespes-extra/main/scripts/powershell/setup/src/main.ps1", "$env:TEMP/main.ps1");
+  $web_client.DownloadFile("https://raw.githubusercontent.com/dreisss/iespes-extra/main/scripts/powershell/setup/src/utils.ps1", "$env:TEMP/utils.ps1");
+  $console.success("Inicializador baixado com sucesso!");
+  
+  $console.puts("Executando inicializador...");
+  Start-Process powershell -Verb RunAs -ArgumentList ("-Noprofile -Noexit -ExecutionPolicy Bypass -File '$env:TEMP/main.ps1' -Elevated");
+  $console.success("Inicializador executando com sucesso!")
+  
+  $console.puts("Finalizando execução do script!")
+  $console.alert("Script executado com sucesso!")
+  exit;
 }
-
-# =====================================================================> Running
-$console.alert("Starting running script")
-[bool] $isNotebook = $console.gets("  Is a notebook? (y, N)").Equals("y")
-[int] $labinNumber = $console.gets("  Laboratory number")
-[int] $computerNumber = $console.gets("  Computer number")
-
-$console.alert("Verifying network connection")
-verifyNetworkConnection
-
-(New-Object System.Net.WebClient).DownloadFile("https://raw.githubusercontent.com/dreisss/iespes-extra/main/scripts/powershell/setup/src/main.ps1", "$env:TEMP\main.ps1")
-powershell.exe -file "$env:TEMP\main.ps1" $isNotebook $labinNumber $computerNumber
+catch {
+  $console.alert_error("Ocorreu um erro na execução do script!")
+  exit;
+}
