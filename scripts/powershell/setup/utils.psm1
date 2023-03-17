@@ -62,7 +62,7 @@ function create_network_manager([hashtable] $data) {
         netsh.exe wlan connect "IESPES-HP2G";
         [System.Console]::ReadKey($true) | Out-Null; 
       }
-      Start-Sleep -Seconds 5
+      Start-Sleep -Seconds 5;
     }
   }
 

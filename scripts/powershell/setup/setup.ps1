@@ -2,15 +2,7 @@
 
 Import-Module "./utils";
 
-if (-not(running_as_admin)) {
-  Start-Process powershell -Verb RunAs -ArgumentList ('-Noprofile -ExecutionPolicy Bypass -File "{0}" -Elevated' -f ($myinvocation.MyCommand.Definition));
-  exit;
-}
-
-try {
-  $console = create_console;
-  $console.alert("Iniciando execução do script!");
-  
+function get_data {
   $console.puts("Verificando se existe cache:");
   $cache = create_cache_manager($env:TEMP);
   
@@ -39,8 +31,12 @@ try {
     $console.success("Cache salvo com sucesso!");
   }
 
+  return $cache.get_data();
+}
+
+function verify_network([hashtable] $data) {
   $console.alert("Verificando conexão com a Internet!");
-  $network = create_network_manager($cache.get_data());
+  $network = create_network_manager($data);
 
   $console.puts("Iniciando teste de conexão:");
   $console.puts("Teste em andamento...");
@@ -60,7 +56,9 @@ try {
   }
 
   $console.success("Teste de conexão bem sucedido! Continuando execução do script!");
+}
 
+function run_initializer_routine {
   $console.alert("Baixando e executando inicializador do script!");
   $console.puts("Baixando inicializador...");
   [System.Net.WebClient] $web_client = New-Object System.Net.WebClient;
@@ -71,6 +69,21 @@ try {
   $console.puts("Executando inicializador...");
   Start-Process powershell -Verb RunAs -ArgumentList ("-Noprofile -Noexit -ExecutionPolicy Bypass -File '$env:TEMP/main.ps1' -Elevated");
   $console.success("Inicializador executando com sucesso!")
+}
+
+# ===> Running 
+if (-not(running_as_admin)) {
+  Start-Process powershell -Verb RunAs -ArgumentList ('-Noprofile -ExecutionPolicy Bypass -File "{0}" -Elevated' -f ($myinvocation.MyCommand.Definition));
+  exit;
+}
+
+try {
+  $console = create_console;
+  $console.alert("Iniciando execução do script!");
+  
+  [hashtable] $data = get_data;
+  verify_network($data);
+  run_initializer_routine;
   
   $console.puts("Finalizando execução do script!")
   $console.alert("Script executado com sucesso!")
