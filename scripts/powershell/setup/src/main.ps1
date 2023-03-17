@@ -1,64 +1,48 @@
-$isNotebook = $args[0]
-$labinNumber = $args[1]
-$computerNumber = $args[2]
+#!/usr/bin/env pwsh
 
-function print( [string] $text, [string] $color = "Blue") {
-  Write-Host -ForegroundColor $color "   $text"
-}
+Import-Module "$env:TEMP/utils";
 
-function important( [string] $text, [string] $color = "Blue") {
-  Write-Host ""
-  Write-Host -BackgroundColor "Black"  -ForegroundColor $color " | $text | "
-  Write-Host ""
-}
-
-function isRunningAsAdmin {
-  $currentProcess = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
-  return $currentProcess.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-}
-
-if (-not(isRunningAsAdmin)) {
-  Start-Process powershell -Verb RunAs -ArgumentList ('-Noprofile -ExecutionPolicy Bypass -File "{0}" -Elevated' -f ($myinvocation.MyCommand.Definition))
-  exit
-}
-
-function downloadScripts {
-  print("Downloading utilities module file...")
-  (New-Object System.Net.WebClient).DownloadFile("https://raw.githubusercontent.com/dreisss/iespes-extra/main/scripts/powershell/setup/src/utilities.psm1", "$env:TEMP\utilities.psm1")
-
-  foreach ($file in @("general", "apps", "optimize", "style", "permissions", "other")) {
-    print("Downloading $file.ps1 file...")
-    (New-Object System.Net.WebClient).DownloadFile("https://raw.githubusercontent.com/dreisss/iespes-extra/main/scripts/powershell/setup/src/$file.ps1", "$env:TEMP\$file.ps1")
+try {
+  $console = create_console;
+  $console.alert("Iniciando execução do script!");
+  
+  $console.puts("Verificando se existe cache:");
+  $cache = create_cache_manager($env:TEMP);
+  
+  $console.puts("Procurando por cache...");
+  $cache.read();
+  
+  if ($cache.exist) {
+    $console.success("Existe cache salvo! Continuando execução do script!");
   }
-}
-
-function runScripts {
-  foreach ($file in @("general", "apps", "optimize", "style", "permissions", "other")) {
-    important("Running $file.ps1 file...") -color "DarkCyan"
-    powershell.exe -file "$env:TEMP\$file.ps1" $isNotebook $labinNumber $computerNumber
+  else {
+    $console.alert_error("Não existe cache salvo! Parando execução do script!");
+    Throw;
   }
+
+  $console.alert("Baixando e executando scripts auxiliares!");
+  $console.puts("Baixando scripts auxiliares...");
+  $scripts = create_script_manager @($env:TEMP, "https://raw.githubusercontent.com/dreisss/iespes-extra/main/scripts/powershell/setup/src");
+  $scripts.download(@("general", "apps", "optimize", "style", "permissions", "other"));
+  $console.success("Scripts auxiliares baixados com sucesso!");
+  
+  $console.puts("Executando scripts auxiliares...");
+  $scripts.run(@("general", "apps", "optimize", "style", "permissions", "other"));
+  $console.success("Scripts auxiliares executados com sucesso!");
+  
+  $console.puts("Removendo scripts auxiliares...");
+  $scripts.delete(@("general", "apps", "optimize", "style", "permissions", "other"));
+  $console.success("Scripts auxiliares removidos com sucesso!");
+  
+  $console.puts("Configurando política de execução como restrita")
+  Set-ExecutionPolicy "Restricted" -Scope "LocalMachine" -Force
+  $console.success("Política de execução configurada com sucesso!")
+
+  $console.puts("Finalizando execução do script!")
+  $console.alert("Script executado com sucesso!")
+  exit;
 }
-
-function removeScripts {
-  print("Removing utilities.psm1 file...")
-  Remove-Item "$env:TEMP\utilities.psm1"
-
-  foreach ($file in @("general", "apps", "optimize", "style", "permissions", "other")) {
-    print("Removing $file.ps1 file...")
-    Remove-Item "$env:TEMP\$file.ps1"
-  }
+catch {
+  $console.alert_error("Ocorreu um erro na execução do script!")
+  exit;
 }
-
-important("Downloading other configuration scripts")
-downloadScripts
-
-important("Running other configuration scripts")
-runScripts
-
-important("Removing other configuration scripts")
-removeScripts
-
-important("Setting execution policy to restricted")
-Set-ExecutionPolicy "Restricted" -Scope "LocalMachine" -Force
-
-important("Finished script execution")
