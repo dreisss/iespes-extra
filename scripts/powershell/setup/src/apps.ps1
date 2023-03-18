@@ -1,66 +1,35 @@
-Import-Module "$env:TEMP\utilities"
-[string] $labinNumber = $args[1]
+Import-Module "$env:TEMP/utils";
 
-# ==================================================================> Installing
-function installChocolatey {
-  [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
-  Invoke-Expression ((New-Object System.Net.WebClient).DownloadString("https://community.chocolatey.org/install.ps1"))
+$console = create_console;
+
+$console.puts("Executando arquivo `"apps.ps1`":");
+
+$console.puts("  Utilizando dados salvos em cache...");
+$cache = create_cache_manager($env:TEMP);
+$cache.read();
+$data = $cache.get_data();
+$console.success("  Dados utilizados com sucesso!");
+
+$console.puts("  Instalando aplicativos padrão...");
+foreach ($app in @()) { winget install $app; } # TODO: add WinRar, Adobe Reader, Firefox, Cpu-z, Microsoft Office
+$console.success("  Aplicativos padrão instalados com sucesso!");
+
+$console.puts("  Instalando aplicativos específicos do laboratório $($data["laboratory_number"])...");
+if ($data["laboratory_number"] -eq 2) {
+  foreach ($app in @()) { winget install $app; }
 }
 
-function installDefaultApps {
-  foreach ($app in @("winrar", "adobereader", "googlechrome", "firefox", "cpu-z")) {
-    print("    $app...")
-    choco.exe install $app -yf --ignore-checksums | Out-Null
-  }
+if ($data["laboratory_number"] -eq 4) {
+  foreach ($app in @()) { winget install $app; } # TODO: add VSCode, Git, Python, Sqlite, Packet Tracer
 }
 
-function installDeveloperApps {
-  foreach ($app in @("git", "python", "sqlite", "vscode")) {
-    print("    $app...")
-    choco.exe install $app -yf --ignore-checksums | Out-Null
-  }
+if ($data["laboratory_number"] -eq 5) {
+  foreach ($app in @()) { winget install $app; }
 }
+$console.success("  Aplicativos específicos do laboratório $($data["laboratory_number"]) instalados com sucesso!");
 
-function installApps {
-  print("  Chocolatey...")
-  installChocolatey
+$console.puts("  Desinstalando aplicativos desnecessários...");
+foreach ($app in apps_to_uninstall) { winget uninstall --id $app; }
+$console.success("  Aplicativos desinstalados com sucesso!");
 
-  print("  Default apps:")
-  installDefaultApps
-
-  if (isDeveloperLabin($labinNumber)) {
-    print
-    print("  Developer apps:")
-    installDeveloperApps
-  }
-}
-
-# ================================================================> Uninstalling
-function uninstallWindowsDefaultApps {
-  foreach ($app in getWindowsDefaultApps) {
-    print("    $app...")
-    Get-AppxPackage -Name $app -AllUsers | Remove-AppxPackage -AllUsers
-    (Get-AppxProvisionedPackage -Online).Where( { $_.DisplayName -eq $app }) | Remove-AppxProvisionedPackage -Online
-  }
-}
-
-function uninstallOneDrive {
-  taskkill.exe /f /im "OneDrive.exe" | Out-Null
-  cmd.exe /c "$env:SystemRoot\SysWOW64\OneDriveSetup.exe" /uninstall | Out-Null
-}
-
-function uninstallApps {
-  print("  OneDrive...")
-  uninstallOneDrive
-
-  print("  Windows default apps:")
-  uninstallWindowsDefaultApps
-}
-
-# =====================================================================> Running
-print("> Installing Apps")
-installApps
-
-print
-print("> Uninstalling Apps")
-uninstallApps
+$console.puts("Execução do arquivo `"apps.ps1`" finalizado!");
