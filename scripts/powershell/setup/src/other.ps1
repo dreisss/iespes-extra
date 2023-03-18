@@ -1,52 +1,31 @@
-Import-Module "$env:TEMP\utilities"
+Import-Module "$env:TEMP/utils";
 
-# ===================================================================> Functions
-function disableBingSearch {
-  foreach ($user in @("HKCU:", "Registry::HKEY_USERS\.DEFAULT")) {
-    Set-ItemProperty -Force -Type "DWord" -Value 0 -Name "BingSearchEnabled" "$user\SOFTWARE\Microsoft\Windows\CurrentVersion\Search"
-  }
-}
+$console = create_console;
 
-function setExplorerLaunchPage {
-  New-Item -Path "Registry::HKEY_USERS\.DEFAULT\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" | Out-Null
+$console.puts("Executando arquivo `"other.ps1`":");
 
-  foreach ($user in @("HKCU:", "Registry::HKEY_USERS\.DEFAULT")) {
-    Set-ItemProperty -Force -Type "DWord" -Value 1 -Name "LaunchTo" "$user\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
-  }
-}
+$console.puts("  Desabilitando pesquisa no bing...");
+Set-ItemProperty -Force -Type "DWord" -Value 0 -Name "BingSearchEnabled" "HKCU:/SOFTWARE/Microsoft/Windows/CurrentVersion/Search";
+$console.success("  Pesquisa no bing desabilitada com sucesso!");
 
-function setQuickAccessPage {
-  foreach ($user in @("HKCU:", "Registry::HKEY_USERS\.DEFAULT")) {
-    Set-ItemProperty -Force -Type "DWord" -Value 0 -Name "ShowRecent" "$user\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer"
-    Set-ItemProperty -Force -Type "DWord" -Value 0 -Name "ShowFrequent" "$user\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer"
-  }
-}
+$console.puts("  Configurando página de início do explorer...");
+Set-ItemProperty -Force -Type "DWord" -Value 1 -Name "LaunchTo" "HKCU:/SOFTWARE/Microsoft/Windows/CurrentVersion/Explorer/Advanced"
+$console.success("  Página de início do explorer configurada com sucesso!");
 
-function createDefaultUser {
-  New-LocalUser -Name "Aluno" -NoPassword | Out-Null
-  Set-LocalUser -Name "Aluno" -UserMayChangePassword $false  -PasswordNeverExpires $true -AccountNeverExpires | Out-Null
-  Add-LocalGroupMember -SID "S-1-5-32-545" -Member "Aluno" | Out-Null
-}
+$console.puts("  Configurando página de acesso rápido do explorer...");
+Set-ItemProperty -Force -Type "DWord" -Value 0 -Name "ShowRecent" "HKCU:/SOFTWARE/Microsoft/Windows/CurrentVersion/Explorer"
+Set-ItemProperty -Force -Type "DWord" -Value 0 -Name "ShowFrequent" "HKCU:/SOFTWARE/Microsoft/Windows/CurrentVersion/Explorer"
+$console.success("  Página de acesso rápido do explorer configurada com sucesso!");
 
-# =====================================================================> Running
-function configComputerOther {
-  disableBingSearch
-  print("Disabled bing search on menu")
+$console.puts("  Desabilitando suspensão do computador...");
+powercfg.exe -change -monitor-timeout-ac 0
+powercfg.exe -change -standby-timeout-ac 0
+$console.success("  Suspensão do computador desabilitado com sucesso!");
 
-  setExplorerLaunchPage
-  print("Configured explorer launch page to 'This Computer' page")
+$console.puts("  Criando usuário `"Aluno`"...");
+New-LocalUser -Name "Aluno" -NoPassword | Out-Null
+Set-LocalUser -Name "Aluno" -UserMayChangePassword $false  -PasswordNeverExpires $true -AccountNeverExpires | Out-Null
+Add-LocalGroupMember -SID "S-1-5-32-545" -Member "Aluno" | Out-Null
+$console.success("  Usuário `"Aluno`" criado com sucesso!");
 
-  setQuickAccessPage
-  print("Configured 'Quick Access' explorer page")
-
-  powercfg.exe -change -monitor-timeout-ac 0
-  print("Disabled monitor sleeping timeout")
-
-  powercfg.exe -change -standby-timeout-ac 0
-  print("Disabled computer sleeping timeout")
-
-  createDefaultUser
-  print("Created default user")
-}
-
-configComputerOther
+$console.puts("Execução do arquivo `"other.ps1`" finalizado!");
