@@ -1,36 +1,24 @@
-Import-Module "$env:TEMP\utilities"
+Import-Module "$env:TEMP/utils";
 
-# ===================================================================> Functions
-function setMinimalVisualEffects {
-  New-Item -Path "Registry::HKEY_USERS\.DEFAULT\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects"
+$console = create_console;
 
-  foreach ($user in @("HKCU:", "Registry::HKEY_USERS\.DEFAULT")) {
-    Set-ItemProperty -Force -Type "DWord" -Value 2 -Name "VisualFXSetting" "$user\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects"
-  }
-}
+$console.puts("Executando arquivo `"optimize.ps1`":");
 
-function disableTransparency {
-  New-Item -Path "Registry::HKEY_USERS\.DEFAULT\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize"
+$console.puts("  Configurando efeitos visuais para o usuário administrador...");
+Set-ItemProperty -Force -Type "DWord" -Value 2 -Name "VisualFXSetting" "HKCU:/SOFTWARE/Microsoft/Windows/CurrentVersion/Explorer/VisualEffects"
+$console.success("  Efeitos visuais configurados com sucesso!");
 
-  foreach ($user in @("HKCU:", "Registry::HKEY_USERS\.DEFAULT")) {
-    Set-ItemProperty -Force -Type "DWord" -Value 0 -Name "EnableTransparency" "$user\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize"
-  }
-}
+$console.puts("  Desativando transparência para o usuário administrador...");
+Set-ItemProperty -Force -Type "DWord" -Value 0 -Name "EnableTransparency" "HKCU:/SOFTWARE/Microsoft/Windows/CurrentVersion/Themes/Personalize"
+$console.success("  Transparência desativada com sucesso!");
 
-# =====================================================================> Running
-function optimizeComputer {
-  setMinimalVisualEffects
-  print("Configured visual effects to minimal")
+$console.puts("  Desativando telemetria...");
+Set-ItemProperty -Force -Type "DWord" -Value 0 -Name "AllowTelemetry" "HKLM:/SOFTWARE/Policies/Microsoft/Windows/DataCollection"
+$console.success("  Telemetria desativada com sucesso!");
 
-  disableTransparency
-  print("Disabled transparency effects")
+$console.puts("  Desativando aplicativos em segundo plano...");
+New-Item -Path "HKLM:/SOFTWARE/Policies/Microsoft/Windows/AppPrivacy" | Out-Null
+Set-ItemProperty -Force -Type "DWord" -Value 2 -Name "LetAppsRunInBackground" "HKLM:/SOFTWARE/Policies/Microsoft/Windows/AppPrivacy"
+$console.success("  Aplicativos em segundo plano desativados com sucesso!");
 
-  Set-ItemProperty -Force -Type "DWord" -Value 0 -Name "AllowTelemetry" "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection"
-  print("Disabled Telemetry")
-
-  New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy" | Out-Null
-  Set-ItemProperty -Force -Type "DWord" -Value 2 -Name "LetAppsRunInBackground" "HKLM:\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy"
-  print("Disabled background applications")
-}
-
-optimizeComputer
+$console.puts("Execução do arquivo `"optimize.ps1`" finalizado!");
