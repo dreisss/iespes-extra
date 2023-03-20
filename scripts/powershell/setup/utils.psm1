@@ -18,37 +18,37 @@ function create_console {
 
 function create_cache_manager([string] $path) {
   class CacheManager {
-    [hashtable] $data; [string] $path; [bool] $exist;
+    [object] $data; [string] $path; [bool] $exist;
 
     CacheManager([string] $path) {
       $this.path = $path;
     }
     
     [void] read() {
-      if ($this.data = Get-Content "$($this.path)/setup_cache" -ErrorAction "SilentlyContinue" | ConvertFrom-Json -AsHashtable) {
+      if ($this.data = Get-Content "$($this.path)/setup_cache" -ErrorAction "SilentlyContinue" | ConvertFrom-Json) {
         $this.exist = $true;
         return;
       }
-      $this.data = @{};
+      $this.data = [object]@{};
     }
 
     [void] write() { ConvertTo-Json $this.data | Set-Content "$($this.path)/setup_cache"; }
-    [void] set([string] $key, [string] $value) { $this.data[$key] = $value; }
-    [string] get([string] $key) { return $this.data[$key]; } 
-    [hashtable] get_data() { return $this.data; }
+    [void] set([string] $key, [string] $value) { $this.data.$key = $value; }
+    [string] get([string] $key) { return $this.data.$key; } 
+    [object] get_data() { return $this.data; }
   }
 
   return New-Object CacheManager($path);
 }
 
-function create_network_manager([hashtable] $data) {
+function create_network_manager([object] $data) {
   class NetworkManager {
     [string] $ip; [string] $gateway; [bool] $has_connection;
 
-    NetworkManager([hashtable] $data) {
-      if (-not($data["is_notebook"])) {
-        $this.ip = "192.168.$($data["laboratory_number"]).$($data["computer_number"] + 1)";
-        $this.gateway = "192.168.$($data["laboratory_number"]).1";
+    NetworkManager([object] $data) {
+      if (-not($data.is_notebook)) {
+        $this.ip = "192.168.$($data.laboratory_number).$($data.computer_number + 1)";
+        $this.gateway = "192.168.$($data.laboratory_number).1";
       }
     }
 

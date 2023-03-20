@@ -13,21 +13,21 @@ function create_console {
 
 function create_cache_manager([string] $path) {
   class CacheManager {
-    [hashtable] $data; [string] $path; [bool] $exist;
+    [object] $data; [string] $path; [bool] $exist;
 
     CacheManager([string] $path) {
       $this.path = $path;
     }
     
     [void] read() {
-      if ($this.data = Get-Content "$($this.path)/setup_cache" -ErrorAction "SilentlyContinue" | ConvertFrom-Json -AsHashtable) {
+      if ($this.data = Get-Content "$($this.path)/setup_cache" -ErrorAction "SilentlyContinue" | ConvertFrom-Json) {
         $this.exist = $true;
         return;
       }
-      $this.data = @{};
+      $this.data = [object]@{};
     }
 
-    [hashtable] get_data() { return $this.data; }
+    [object] get_data() { return $this.data; }
   }
 
   return New-Object CacheManager($path);
@@ -50,11 +50,13 @@ function create_script_manager([string[]] $data) {
     }
     
     run([string[]] $scripts) {
-      foreach ($script in $scripts) { powershell.exe -file "$($this.path)/$script.ps1"; }
+      foreach ($script in $scripts) {
+        Start-Process powershell -Verb RunAs -ArgumentList ("-Noexit -Noprofile -ExecutionPolicy Bypass -File $($this.path)/$script.ps1 -Elevated");
+      }
     }
 
     delete([string[]] $scripts) {
-      foreach ($script in $scripts) { Remove-Item $script; }
+      foreach ($script in $scripts) { Remove-Item $($this.path)/$script.ps1; }
     }
   }
 

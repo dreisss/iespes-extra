@@ -34,7 +34,7 @@ function get_data {
   return $cache.get_data();
 }
 
-function verify_network([hashtable] $data) {
+function verify_network([object] $data) {
   $console.alert("Verificando conexão com a Internet!");
   $network = create_network_manager($data);
 
@@ -63,17 +63,17 @@ function run_initializer_routine {
   $console.puts("Baixando inicializador...");
   [System.Net.WebClient] $web_client = New-Object System.Net.WebClient;
   $web_client.DownloadFile("https://raw.githubusercontent.com/dreisss/iespes-extra/main/scripts/powershell/setup/src/main.ps1", "$env:TEMP/main.ps1");
-  $web_client.DownloadFile("https://raw.githubusercontent.com/dreisss/iespes-extra/main/scripts/powershell/setup/src/utils.ps1", "$env:TEMP/utils.ps1");
+  $web_client.DownloadFile("https://raw.githubusercontent.com/dreisss/iespes-extra/main/scripts/powershell/setup/src/utils.psm1", "$env:TEMP/utils.ps1");
   $console.success("Inicializador baixado com sucesso!");
   
   $console.puts("Executando inicializador...");
-  Start-Process powershell -Verb RunAs -ArgumentList ("-Noprofile -Noexit -ExecutionPolicy Bypass -File '$env:TEMP/main.ps1' -Elevated");
+  Start-Process powershell -Verb RunAs -ArgumentList ("-Noexit -Noprofile -ExecutionPolicy Bypass -File $env:TEMP/main.ps1 -Elevated");
   $console.success("Inicializador executando com sucesso!")
 }
 
 # ===> Running 
 if (-not(running_as_admin)) {
-  Start-Process powershell -Verb RunAs -ArgumentList ('-Noprofile -ExecutionPolicy Bypass -File "{0}" -Elevated' -f ($myinvocation.MyCommand.Definition));
+  Start-Process powershell -Verb RunAs -ArgumentList ('-Noexit -Noprofile -ExecutionPolicy Bypass -File "{0}" -Elevated' -f ($myinvocation.MyCommand.Definition));
   exit;
 }
 
@@ -81,7 +81,7 @@ try {
   $console = create_console;
   $console.alert("Iniciando execução do script!");
   
-  [hashtable] $data = get_data;
+  [object] $data = get_data;
   verify_network($data);
   run_initializer_routine;
   

@@ -11,8 +11,8 @@ $data = $cache.get_data();
 $console.success("  Dados utilizados com sucesso!");
 
 $console.puts("  Renomeando computador...");
-$lab = $data["laboratory_number"].PadLeft(2, [char] "0");
-$comp = $data["computer_number"].PadLeft(2, [char] "0");
+$lab = $data.laboratory_number.PadLeft(2, [char] "0");
+$comp = $data.computer_number.PadLeft(2, [char] "0");
 Rename-Computer -NewName "LABIN$lab-PC$comp" | Out-Null
 $console.success("  Computador renomeado com sucesso!");
 

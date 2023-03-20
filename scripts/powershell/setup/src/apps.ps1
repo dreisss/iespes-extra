@@ -10,26 +10,27 @@ $cache.read();
 $data = $cache.get_data();
 $console.success("  Dados utilizados com sucesso!");
 
+$console.puts("  Baixando gerenciador de pacotes Chocolatey...");
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
+Invoke-Expression ((New-Object System.Net.WebClient).DownloadString("https://community.chocolatey.org/install.ps1"));
+$console.success("  Chocolatey instalado com sucesso!")
+
 $console.puts("  Instalando aplicativos padrão...");
-foreach ($app in @()) { winget install $app; } # TODO: add WinRar, Adobe Reader, Firefox, Cpu-z, Microsoft Office
+choco.exe install winrar adobereader firefox cpu-z -yf --ignore-checksums | Out-Null;
 $console.success("  Aplicativos padrão instalados com sucesso!");
 
-$console.puts("  Instalando aplicativos específicos do laboratório $($data["laboratory_number"])...");
-if ($data["laboratory_number"] -eq 2) {
-  foreach ($app in @()) { winget install $app; }
+$console.puts("  Instalando aplicativos específicos do laboratório $($data.laboratory_number)...");
+if ($data.laboratory_number -eq 2) {
+  # choco.exe install $app -yf --ignore-checksums | Out-Null;
 }
 
-if ($data["laboratory_number"] -eq 4) {
-  foreach ($app in @()) { winget install $app; } # TODO: add VSCode, Git, Python, Sqlite, Packet Tracer
+if ($data.laboratory_number -eq 4) {
+  choco.exe install vscode git python sqlite -yf --ignore-checksums | Out-Null; # install Packet Tracer
 }
 
-if ($data["laboratory_number"] -eq 5) {
-  foreach ($app in @()) { winget install $app; }
+if ($data.laboratory_number -eq 5) {
+  choco.exe install  -yf --ignore-checksums | Out-Null; # install Firebird, Flamerobin
 }
-$console.success("  Aplicativos específicos do laboratório $($data["laboratory_number"]) instalados com sucesso!");
-
-$console.puts("  Desinstalando aplicativos desnecessários...");
-foreach ($app in apps_to_uninstall) { winget uninstall --id $app; }
-$console.success("  Aplicativos desinstalados com sucesso!");
+$console.success("  Aplicativos específicos do laboratório $($data.laboratory_number) instalados com sucesso!");
 
 $console.puts("Execução do arquivo `"apps.ps1`" finalizado!");
