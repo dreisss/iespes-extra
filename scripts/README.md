@@ -6,6 +6,7 @@ Some other useful scripts:
 
 | [**_`Python`_**](./python/)
 | [**_`Powershell`_**](./powershell/) |
+| [**_`Bash`_**](./bash/)
 
 <div align="right">
 
