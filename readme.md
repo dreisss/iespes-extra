@@ -13,7 +13,6 @@ be redirected.
 - [**_`Design`_**](./design/) | Design projects made to use in the computer labs
 - [**_`Matlab`_**](./matlab/) | Matlab scripts solving problems requested by a teacher
 - [**_`Scripts`_**](./scripts/) | Some other useful scripts
-- [**_`Other`_**](./other/) | Other things not categorized
 
 _Related repositories_:
 
